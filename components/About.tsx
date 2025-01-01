@@ -14,18 +14,18 @@ export default function About() {
         Throughout my career in system administration, I’ve been driven by a commitment to stability, 
         efficiency, and innovation in IT infrastructure. 
         My focus has always been on creating:{" "}
-          <span className="text-white">
+          <span className="text-black dark:text-white">
           robust and secure systems that empower businesses to operate seamlessly.
           </span>{" "}
         </p>
-        <p className="text-start  text-muted-foreground lg:px-6">
+        <p className="text-start text-muted-foreground lg:px-6">
         With over five years of experience managing data centers and server infrastructures, 
         I’ve honed my skills in virtualization, automation, and cloud computing. Currently, 
         I’m expanding my expertise into the world of DevOps, mastering tools like Docker, 
         Kubernetes, and CI/CD pipelines to drive automation and scalability in modern IT 
         environments. At{" "}
           <a
-            className="no-wrap text-primary dark:text-white"
+            className="no-wrap text-primary text-black dark:text-white"
             href="https://silverlining.com.np"
             target="blank"
             rel="noopener noreferrer"

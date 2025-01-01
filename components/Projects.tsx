@@ -12,34 +12,30 @@ import { FaArrowRight } from "react-icons/fa";
 
 const jobProjects = [
   {
-    imagePath: "/vela.avif",
-    title: "Vela Exchange - Product Design",
+    imagePath: "/cicd.png",
+    title: "Automated CI/CD Pipeline for Dockerized Applications",
     description:
-      "Led a team of 4 designers, implementing design systems and processes to launch flagship features like Duels, Accounts, Loyalty Tiers, and Notification Tray and System.",
+      "Developed a CI/CD pipeline to automate the build, test, and deployment processes for a Node.js application, using GitHub Actions and Docker.",
     skills: [
-      "Product Design",
-      "UI/UX Design",
-      "Design System",
-      "Design Strategy",
-      "Vercel",
-      "Figma",
+      "GitHub Actions",
+      "Docker",
+      "Node.js",
+      "AWS",
+      "Terraform",
     ],
-    link: "https://vela.exchange",
+    link: "https://github.com/ank404/node-docker-CI-CD.git",
   },
   {
-    imagePath: "/l3x.avif",
-    title: "L3X Network - Founding Product Design",
+    imagePath: "/serverstat.png",
+    title: "Server Stats - System Monitoring Tool",
     description:
-      "L3X Network is a Layer 3 interoperability blockchain designed to provide institutions, developers, and users with secure, compliant, and efficient access to decentralized finance (DeFi) markets. My role involved founding and leading the design team, mapping UX, and designing the protocol's Landing Page and Interfaces for the Bridge, Trading, Swap, and Staking platforms.",
+      "The Server Stats project is a simple yet powerful Bash script designed to monitor and display essential server performance metrics. It provides real-time insights into system health, making it a valuable tool for administrators and enthusiasts managing Linux-based servers.",
     skills: [
-      "Product Design",
-      "UI/UX Design",
-      "Design System",
-      "Design Strategy",
-      "Vercel",
-      "Figma",
+      "Bash scripting",
+      "Linux-based",
+      "Linux tools",
     ],
-    link: "https://l3x.com",
+    link: "https://github.com/ank404/server-stats.git",
   },
   {
     imagePath: "/swoop-og-banner.webp",
