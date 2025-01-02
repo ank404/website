@@ -33,8 +33,8 @@ export default function Nav() {
       }`,
       textClass: `nav-text text-xs font-bold uppercase tracking-widest ${
         isActive
-          ? "text-foreground"
-          : "text-slate-500 group-hover:text-foreground"
+          ? "page-text"
+          : "text-slate-600 group-hover:page-text"
       }`,
     };
   };
@@ -47,10 +47,10 @@ export default function Nav() {
         <h1 className="text-[38px] font-bold lg:text-start">
           Anup Khanal
         </h1>
-        <h3 className="text-lg lg:text-start text-muted-foreground">
+        <h3 className="text-lg lg:text-start page-text">
         System Administrator & Aspiring DevOps Engineer.
         </h3>
-        <p className="text-base lg:text-start text-muted-foreground">
+        <p className="text-base lg:text-start page-text">
           With over five years of experience in data center operations, server
           management, and virtualization, I specialize in building secure,
           scalable, and efficient IT infrastructures. Currently expanding my

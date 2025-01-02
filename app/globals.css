@@ -71,6 +71,12 @@
   }
 }
 
+@layer components {
+  .page-text {
+    @apply text-black dark:text-white;
+  }
+}
+
 @layer base {
   * {
     @apply border-border;
