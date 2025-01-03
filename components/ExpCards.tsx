@@ -102,7 +102,7 @@ export default function ExpCard() {
                   {position}
                 </p>
               ))}
-              <CardDescription className="py-3 text-slate-950">
+              <CardDescription className="py-3 text-slate-950 dark:text-slate-200">
                 {job.description}
               </CardDescription>
               <CardFooter className="p-0 flex flex-wrap gap-2">

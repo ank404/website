@@ -112,7 +112,7 @@ export default function Projects() {
                   {project.title}{" "}
                   <FaArrowRight className="ml-1 inline-block h-5 w-5 shrink-0 transition-transform group-hover:-translate-y-1 group-hover:translate-x-1 motion-reduce:transition-none" />
                 </p>
-                <CardDescription className="py-3 text-slate-950">
+                <CardDescription className="py-3 text-slate-950 dark:text-slate-50">
                   {project.description}
                 </CardDescription>
                 <CardFooter className="p-0 flex flex-wrap gap-2">

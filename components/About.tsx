@@ -14,7 +14,7 @@ export default function About() {
         Throughout my career in system administration, I’ve been driven by a commitment to stability, 
         efficiency, and innovation in IT infrastructure. 
         My focus has always been on creating:{" "}
-          <span className="text-black dark:text-white font-bold">
+          <span className="text-black dark:text-yellow-700 font-bold">
           robust and secure systems that empower businesses to operate seamlessly.
           </span>{" "}
         </p>
@@ -25,7 +25,7 @@ export default function About() {
         Kubernetes, and CI/CD pipelines to drive automation and scalability in modern IT 
         environments. At{" "}
           <a
-            className="no-wrap text-primary text-black dark:text-white font-bold"
+            className="no-wrap text-primary text-black dark:text-yellow-700 font-bold"
             href="https://silverlining.com.np"
             target="blank"
             rel="noopener noreferrer"
