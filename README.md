@@ -130,30 +130,6 @@ Ensure you have the following installed:
 
 ---
 
-## 🚀 Optimizations
-
-### Performance
-- Lazy-loaded images for faster initial load.
-- Minimal and reusable components to reduce re-renders.
-
-### Accessibility
-- Keyboard-navigable links and buttons.
-- High contrast and clear focus states.
-
----
-
-## 🌟 Future Enhancements
-- Add a blog section to share technical write-ups.
-- Integrate analytics for tracking visitor engagement.
-- Expand project showcase with filtering capabilities.
-
----
-
-## 📜 License
-This project is licensed under the [MIT License](LICENSE).
-
----
-
 ## 🙌 Acknowledgements
 - Inspired by Brittany Chiang's portfolio design.
 - Icons by [React Icons](https://react-icons.github.io/react-icons).
