@@ -1,5 +1,6 @@
 "use client";
 /* eslint-disable */
+import { FadeIn, ParallaxSection, RevealText } from "./ui/animations";
 
 export default function About() {
   return (
@@ -8,42 +9,49 @@ export default function About() {
         <h2 className="text-sm font-bold uppercase tracking-widest lg:sr-only">
           About
         </h2>
-      </div>
-      <div className="flex flex-col gap-4">
-        <p className="text-start page-text lg:px-6">
-        Throughout my career in system administration, I’ve been driven by a commitment to stability, 
-        efficiency, and innovation in IT infrastructure. 
-        My focus has always been on creating:{" "}
-          <span className="text-black dark:text-yellow-700 font-bold">
-          robust and secure systems that empower businesses to operate seamlessly.
-          </span>{" "}
-        </p>
-        <p className="text-start page-text lg:px-6">
-        With over five years of experience managing data centers and server infrastructures, 
-        I’ve honed my skills in virtualization, automation, and cloud computing. Currently, 
-        I’m expanding my expertise into the world of DevOps, mastering tools like Docker, 
-        Kubernetes, and CI/CD pipelines to drive automation and scalability in modern IT 
-        environments. At{" "}
-          <a
-            className="no-wrap text-primary text-black dark:text-yellow-700 font-bold"
-            href="https://silverlining.com.np"
-            target="blank"
-            rel="noopener noreferrer"
-          >
-            Silver Lining Pvt. Ltd
-          </a>
-          , I’ve managed over 100 physical and virtual servers, optimized web hosting
-          environments, and implemented proactive monitoring systems to ensure high availability and
-          performance. My journey has been one of continuous learning—bridging traditional system
-          administration with emerging DevOps practices to build infrastructures that are both efficient and
-          future-ready.
-        </p>
-        <p className="text-start page-text lg:px-6">
-        I believe in simplifying the complex—designing IT solutions that prioritize user needs, security, and
-        scalability. Whether it’s enhancing email server security, streamlining Linux deployments, or
-        exploring new automation tools, I strive to make technology a reliable partner in solving real-world
-        challenges.
-        </p>
+      </div>      <div className="flex flex-col gap-4">
+        <FadeIn direction="up" delay={100}>
+          <p className="text-start page-text lg:px-6">
+          Throughout my career in system administration, I've been driven by a commitment to stability, 
+          efficiency, and innovation in IT infrastructure. 
+          My focus has always been on creating:{" "}
+            <span className="text-black dark:text-yellow-700 font-bold">
+            robust and secure systems that empower businesses to operate seamlessly.
+            </span>{" "}
+          </p>
+        </FadeIn>
+        
+        <FadeIn direction="up" delay={200}>
+          <p className="text-start page-text lg:px-6">
+          With over five years of experience managing data centers and server infrastructures, 
+          I've honed my skills in virtualization, automation, and cloud computing. Currently, 
+          I'm expanding my expertise into the world of DevOps, mastering tools like Docker, 
+          Kubernetes, and CI/CD pipelines to drive automation and scalability in modern IT 
+          environments. At{" "}
+            <a
+              className="no-wrap text-primary text-black dark:text-yellow-700 font-bold"
+              href="https://silverlining.com.np"
+              target="blank"
+              rel="noopener noreferrer"
+            >
+              Silver Lining Pvt. Ltd
+            </a>
+            , I've managed over 100 physical and virtual servers, optimized web hosting
+            environments, and implemented proactive monitoring systems to ensure high availability and
+            performance. My journey has been one of continuous learning—bridging traditional system
+            administration with emerging DevOps practices to build infrastructures that are both efficient and
+            future-ready.
+          </p>
+        </FadeIn>
+        
+        <FadeIn direction="up" delay={300}>
+          <p className="text-start page-text lg:px-6">
+          I believe in simplifying the complex—designing IT solutions that prioritize user needs, security, and
+          scalability. Whether it's enhancing email server security, streamlining Linux deployments, or
+          exploring new automation tools, I strive to make technology a reliable partner in solving real-world
+          challenges.
+          </p>
+        </FadeIn>
       </div>
     </section>
   );

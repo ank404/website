@@ -6,11 +6,14 @@ import Projects from "@/components/Projects";
 import About from "@/components/About";
 import { useEffect, useRef } from "react";
 import { Inter } from "next/font/google";
+import { useLenis } from "@/context/LenisContext";
+import { FadeIn } from "@/components/ui/animations";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   const auraRef = useRef<HTMLDivElement>(null);
+  const { lenis } = useLenis();
 
   useEffect(() => {
     const updateAuraPosition = (e: MouseEvent) => {
@@ -25,8 +28,33 @@ export default function Home() {
       window.removeEventListener("pointermove", updateAuraPosition);
     };
   }, []);
+  // Add smooth scrolling to anchor links
+  useEffect(() => {
+    if (!lenis) return;
+    
+    const handleAnchorClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      const anchor = target.closest('a[href^="#"]');
+      
+      if (!anchor) return;
+      
+      e.preventDefault();
+      const id = anchor.getAttribute('href');
+      if (id && id !== '#') {
+        const element = document.querySelector(id) as HTMLElement;
+        if (element) {
+          lenis.scrollTo(element, { 
+            offset: -50,
+            duration: 1.5,
+            easing: (t) => 1 - Math.pow(1 - t, 3), // Cubic ease out
+          });
+        }
+      }
+    };
 
-  return (
+    document.addEventListener('click', handleAnchorClick);
+    return () => document.removeEventListener('click', handleAnchorClick);
+  }, [lenis]);  return (
     <>
       <Head>
         <style jsx global>{`

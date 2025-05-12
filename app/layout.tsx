@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import "./animations.css";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import { Analytics } from "@vercel/analytics/react";
+import { LenisProvider } from "@/context/LenisContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -44,8 +46,10 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
-          <Analytics />
+          <LenisProvider>
+            {children}
+            <Analytics />
+          </LenisProvider>
         </ThemeProvider>
       </body>
     </html>
