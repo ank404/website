@@ -88,7 +88,7 @@ export default function ExpCard() {  return (
             delay={index * 200}
             className="mb-16 lg:mb-12 group"
           >
-            <Card className="border-none shadow-none overflow-hidden transition-all duration-500 hover:translate-y-[-5px]">
+            <Card className="border-none shadow-none overflow-hidden p-2 transition-all duration-500 hover:translate-y-[-5px]">
               <CardHeader className="p-0 space-y-1 mb-3 group-hover:text-primary transition-colors duration-300">
                 <div className="flex justify-between">
                   <CardTitle className="text-base font-semibold tracking-tight">

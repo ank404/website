@@ -26,6 +26,14 @@ export const LenisProvider = ({ children }: { children: React.ReactNode }) => {
       infinite: false,
     });
 
+    // Add event listener for page refresh to scroll to top
+    if (typeof window !== 'undefined') {
+      window.history.scrollRestoration = 'manual';
+      window.addEventListener('beforeunload', () => {
+        window.scrollTo(0, 0);
+      });
+    }
+
     function raf(time: number) {
       lenisInstance.raf(time);
       requestAnimationFrame(raf);

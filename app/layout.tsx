@@ -39,6 +39,18 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="scroll-smooth">
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              history.scrollRestoration = 'manual';
+              window.onbeforeunload = function () {
+                window.scrollTo(0, 0);
+              };
+            `,
+          }}
+        />
+      </head>
       <body className={inter.className}>
         <ThemeProvider
           attribute="class"

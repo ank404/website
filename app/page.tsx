@@ -15,6 +15,17 @@ export default function Home() {
   const auraRef = useRef<HTMLDivElement>(null);
   const { lenis } = useLenis();
 
+  // Scroll to top on page load/refresh
+  useEffect(() => {
+    if (lenis) {
+      // Use setTimeout to ensure this happens after the page is fully loaded
+      setTimeout(() => {
+        lenis.scrollTo(0, { immediate: true });
+        console.log('Scrolled to top on page load');
+      }, 0);
+    }
+  }, [lenis]);
+
   useEffect(() => {
     const updateAuraPosition = (e: MouseEvent) => {
       if (auraRef.current) {
