@@ -89,3 +89,24 @@ html.lenis {
 .animate-fade-in-right {
   animation: fade-in-right 0.6s ease-out forwards;
 }
+
+/* Animation for the architecture diagram edge lines */
+@keyframes dash-animation {
+  to {
+    stroke-dashoffset: -20;
+  }
+}
+
+.animate-dash {
+  animation: dash-animation 1s linear infinite;
+}
+
+/* Animation for terminal typing effect */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.cursor-blink {
+  animation: blink 1.2s infinite;
+}

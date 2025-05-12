@@ -15,17 +15,22 @@ export default function Nav() {  const activeSection = useActiveSection([
     "experience",
     "projects",
     "skills",
+    "terminal",
+    "infrastructure-dashboard",
+    "architecture-diagram",
     "certifications",
     "testimonials",
     "resume",
     "contact",
   ]);
-
   const navItems: NavItem[] = [
     { name: "About", href: "#about" },
     { name: "Experience / Education", href: "#experience" },
     { name: "Projects", href: "#projects" },
     { name: "Skills", href: "#skills" },
+    { name: "Terminal", href: "#terminal" },
+    { name: "Infrastructure Dashboard", href: "#infrastructure-dashboard" },
+    { name: "Architecture Diagram", href: "#architecture-diagram" },
     { name: "Certifications", href: "#certifications" },
     { name: "Testimonials", href: "#testimonials" },
     { name: "Resume", href: "#resume" },

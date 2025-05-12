@@ -9,6 +9,9 @@ import Certifications from "@/components/Certifications";
 import Contact from "@/components/Contact";
 import ResumeDownload from "@/components/ResumeDownload";
 import Testimonials from "@/components/Testimonials";
+import Terminal from "@/components/Terminal";
+import LiveDashboard from "@/components/LiveDashboard";
+import CloudArchitecture from "@/components/CloudArchitecture";
 import { useEffect, useRef } from "react";
 import { Inter } from "next/font/google";
 import { useLenis } from "@/context/LenisContext";
@@ -87,6 +90,9 @@ export default function Home() {
             <ExpCard />
             <Projects />
             <Skills />
+            <Terminal />
+            <LiveDashboard />
+            <CloudArchitecture />
             <Certifications />
             <Testimonials />
             <ResumeDownload />
