@@ -4,32 +4,63 @@ const useActiveSection = (sectionIds: string[]): string => {
   const [activeSection, setActiveSection] = useState<string>('');
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          console.log(`Section: ${entry.target.id}, isIntersecting: ${entry.isIntersecting}`);
-          if (entry.isIntersecting) {
-            setActiveSection(entry.target.id);
-            console.log(`Active section updated: ${entry.target.id}`);
-          }
-        });
-      },
-      { threshold: 0.3 }
-    );
+    // Function to determine which section is currently in view
+    const handleScroll = () => {
+      // Get all sections we want to track
+      const sections = sectionIds
+        .map(id => document.getElementById(id))
+        .filter(section => section !== null) as HTMLElement[];
+      
+      if (sections.length === 0) return;
 
-    sectionIds.forEach((sectionId) => {
-      const section = document.getElementById(sectionId);
-      if (section) {
-        observer.observe(section);
-        console.log(`Observing section: ${sectionId}`);
-      } else {
-        console.warn(`Section not found: ${sectionId}`);
+      // Get the position of each section relative to the viewport
+      const sectionPositions = sections.map(section => {
+        const rect = section.getBoundingClientRect();
+        return {
+          id: section.id,
+          top: rect.top,
+          bottom: rect.bottom,
+          height: rect.height,
+          // Calculate how much of the section is in the viewport
+          visiblePercentage: (
+            Math.min(rect.bottom, window.innerHeight) - 
+            Math.max(rect.top, 0)
+          ) / rect.height
+        };
+      });
+      
+      // Find the section that has the most visibility in the viewport
+      let currentSection = sectionPositions.reduce((prev, current) => {
+        // If current section is more visible than previous winner
+        return current.visiblePercentage > prev.visiblePercentage ? current : prev;
+      }, { id: '', visiblePercentage: 0 });
+      
+      // If top of the page and first section not yet in view, set the first section as active
+      if (window.scrollY < 100 && sectionPositions[0]?.top > 0) {
+        currentSection = { id: sectionPositions[0].id, visiblePercentage: 1 };
       }
-    });
+      
+      // If bottom of page, set last section as active
+      if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 50) {
+        currentSection = { id: sectionPositions[sectionPositions.length - 1].id, visiblePercentage: 1 };
+      }
+      
+      // Only update if we have a section with decent visibility (at least 20%)
+      if (currentSection.visiblePercentage > 0.2) {
+        setActiveSection(currentSection.id);
+        console.log(`Active section set to: ${currentSection.id} (${(currentSection.visiblePercentage * 100).toFixed(0)}% visible)`);
+      }
+    };
 
+    // Add event listener for scrolling
+    window.addEventListener('scroll', handleScroll);
+    
+    // Call once on mount to set initial section
+    handleScroll();
+    
+    // Clean up event listener on unmount
     return () => {
-      console.log('Disconnecting observer');
-      observer.disconnect();
+      window.removeEventListener('scroll', handleScroll);
     };
   }, [sectionIds]);
 

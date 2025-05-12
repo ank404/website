@@ -74,21 +74,19 @@ const jobPositions = [
   },
 ];
 
-export default function ExpCard() {
-  return (
-    <section className="relative" id="exp">
+export default function ExpCard() {  return (
+    <section className="relative" id="experience">
       <div className="sticky top-0 z-20 -mx-6 mb-4 w-screen bg-background/0 px-6 py-5 backdrop-blur md:-mx-12 md:px-12 lg:sr-only lg:relative lg:top-auto lg:mx-auto lg:w-full lg:px-0 lg:py-0 lg:opacity-0">
         <h2 className="text-sm font-bold uppercase tracking-widest lg:sr-only">
           Experience
         </h2>
       </div>
       <div className="flex flex-col lg:px-6">
-        {jobPositions.map((job, index) => (
-          <FadeIn 
+        {jobPositions.map((job, index) => (          <FadeIn 
             key={job.currentPosition} 
             direction="up" 
             delay={index * 200}
-            className="mb-10 lg:mb-4 group"
+            className="mb-16 lg:mb-12 group"
           >
             <Card className="border-none shadow-none overflow-hidden transition-all duration-500 hover:translate-y-[-5px]">
               <CardHeader className="p-0 space-y-1 mb-3 group-hover:text-primary transition-colors duration-300">
