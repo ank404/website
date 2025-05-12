@@ -100,9 +100,7 @@ export default function Home() {
           <main className="flex flex-col pt-6 lg:pt-24 lg:w-3/5 lg:py-24 gap-16">
             <About />
             <ExpCard />
-            <Projects />
-            <Skills />
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+            <Projects />            <Skills />            <div className="flex flex-col gap-20">
               <Terminal />
               <LiveDashboard />
             </div>

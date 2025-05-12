@@ -489,9 +489,8 @@ Type 'help <command>' for more information on a specific command`;
         output = `${command}: command not found`;
         isError = true;
       }
-      
-      if (command !== "clear") {
-        setHistory((prev) => [
+        if (command !== "clear") {
+        setHistory((prev: CommandHistory[]) => [
           ...prev,
           { command: trimmedCmd, output, isError },
         ]);
@@ -545,10 +544,9 @@ Type 'help <command>' for more information on a specific command`;
         if (matches.length === 1) {
           setInput(matches[0] + " ");
         }
-      }
-    } else if (e.ctrlKey && e.key === "c") {
+      }    } else if (e.ctrlKey && e.key === "c") {
       e.preventDefault();
-      setHistory(prev => [
+      setHistory((prev: CommandHistory[]) => [
         ...prev,
         { command: input, output: "^C", isError: false }
       ]);
@@ -627,14 +625,13 @@ Type 'help <command>' for more information on a specific command`;
           Terminal Demo
         </h2>
       </div>
-      
-      <FadeIn direction="up" delay={100}>
-        <div className={`${isFullscreen ? 'fixed inset-0 z-50 p-4 bg-background/90 backdrop-blur-sm' : ''}`}>
-          <Card className={`relative border overflow-hidden rounded-xl drop-shadow-lg ${isFullscreen ? 'h-full' : 'h-[480px]'}`}>
+        <FadeIn direction="up" delay={100}>
+        <div className={isFullscreen ? 'terminal-fullscreen' : ''}>
+          <Card className="terminal-window border">
             {/* Glowing effect */}
             <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-primary/10 pointer-events-none"></div>
             
-            <div className="bg-black text-white p-2 flex justify-between items-center border-b border-gray-800 backdrop-blur-md bg-opacity-80 relative z-10">
+            <div className="terminal-header">
               <div className="flex items-center gap-2">
                 <div className="flex gap-1.5 pl-1">
                   <div className="w-3 h-3 rounded-full bg-red-500"></div>
@@ -655,17 +652,16 @@ Type 'help <command>' for more information on a specific command`;
                 </Button>
               </div>
             </div>
-              <CardContent className="p-0 h-full bg-gray-950 bg-opacity-95 text-white">
+            <div className="terminal-body">
               <div 
                 ref={terminalRef} 
-                className="font-mono text-sm p-4 h-full overflow-auto scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent" 
+                className="terminal-content" 
                 onClick={handleTerminalClick}
               >
-                {history.map((item, idx) => (
+                {history.map((item: CommandHistory, idx: number) => (
                   <div key={idx} className="mb-2 group">
                     {item.command && (
-                      <div className="flex items-center gap-2">
-                        <span className="text-green-500">anup@anup-server:~$</span>
+                      <div className="flex items-center gap-2">                        <span className="terminal-prompt">anup@anup-server:~$</span>
                         <span className="flex-1">{item.command}</span>
                         <Button
                           variant="ghost"
@@ -684,9 +680,8 @@ Type 'help <command>' for more information on a specific command`;
                       ></div>
                     )}
                   </div>
-                ))}
-                <div className="flex items-center gap-2">
-                  <span className="text-green-500">anup@anup-server:~$</span>
+                ))}                <div className="flex items-center gap-2">
+                  <span className="terminal-prompt">anup@anup-server:~$</span>
                   <input
                     ref={inputRef}
                     type="text"
@@ -700,9 +695,9 @@ Type 'help <command>' for more information on a specific command`;
                     autoComplete="off"
                   />
                   {isLoading && <span className="animate-pulse text-green-500">■</span>}
-                </div>
-              </div>
-            </CardContent>          </Card>
+                </div>              </div>
+            </div>
+          </Card>
           
           {isFullscreen && (
             <div className="absolute bottom-4 right-4">

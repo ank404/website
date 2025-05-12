@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Poppins, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import "./animations.css";
+import "./terminal.css";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import { Analytics } from "@vercel/analytics/react";
 import { LenisProvider } from "@/context/LenisContext";
