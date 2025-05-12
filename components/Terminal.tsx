@@ -27,9 +27,7 @@ const Terminal = (): React.ReactNode => {
       command: "",
       output: "Welcome to Anup's Terminal! Type 'help' to see available commands.",
     },
-  ]);
-  const [position, setPosition] = useState<number>(history.length);
-  const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
+  ]);  const [position, setPosition] = useState<number>(history.length);
   const [isMinimized, setIsMinimized] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [commandHistory, setCommandHistory] = useState<string[]>([]);
@@ -497,18 +495,33 @@ Type 'help <command>' for more information on a specific command`;
       }
         setInput("");
       setIsLoading(false);
-      setPosition(history.length + 1);
-      
-      // Scroll to bottom
+      setPosition(history.length + 1);      // Scroll to bottom and ensure focus is maintained
       if (terminalRef.current) {
+        // Use multiple nested timeouts with increasing delays to ensure focus is maintained
+        // This helps overcome any other events that might steal focus
         setTimeout(() => {
           if (terminalRef.current) {
             terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
           }
-          // Re-focus the input field after command execution
+          
+          // First focus attempt - immediate
           if (inputRef.current) {
             inputRef.current.focus();
           }
+          
+          // Second focus attempt - short delay
+          setTimeout(() => {
+            if (inputRef.current && document.activeElement !== inputRef.current) {
+              inputRef.current.focus();
+            }
+          }, 50);
+          
+          // Third focus attempt - longer delay for reliability
+          setTimeout(() => {
+            if (inputRef.current && document.activeElement !== inputRef.current) {
+              inputRef.current.focus();
+            }
+          }, 150);
         }, 0);
       }
     }, 100);
@@ -558,27 +571,19 @@ Type 'help <command>' for more information on a specific command`;
       e.preventDefault();
       setHistory([]);
     }
-  };
-  const toggleFullscreen = () => {
-    setIsFullscreen(!isFullscreen);
-    
-    // Focus the input after toggling fullscreen
-    setTimeout(() => {
-      if (inputRef.current) {
-        inputRef.current.focus();
-      }
-    }, 50);
-  };
+  };  // Fullscreen functionality has been removed
 
   const toggleMinimize = () => {
     setIsMinimized(!isMinimized);
-  };
-  // Focus the input when clicking anywhere in the terminal
+  };  // Focus the input when clicking anywhere in the terminal
   const handleTerminalClick = (e: React.MouseEvent) => {
     // Prevent event propagation to stop parent elements from handling the event
     e.stopPropagation();
+    e.preventDefault();
     
-    if (inputRef.current) {
+    // Only focus if we're not already focused on an input field
+    // This prevents losing selection when user is selecting text
+    if (inputRef.current && document.activeElement !== inputRef.current) {
       inputRef.current.focus();
     }
   };
@@ -586,42 +591,49 @@ Type 'help <command>' for more information on a specific command`;
   // Copy text to clipboard
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
-  };  // Handle ESC key for fullscreen exit
-  useEffect(() => {
-    const handleKeyDown = (e: globalThis.KeyboardEvent) => {
-      if (e.key === 'Escape' && isFullscreen) {
-        setIsFullscreen(false);
-      }
-    };
-    
-    window.addEventListener('keydown', handleKeyDown);
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [isFullscreen]);
+  };  // Fullscreen escape handler has been removed
 
   useEffect(() => {
     // Auto-focus on input when component mounts
     if (inputRef.current) {
       inputRef.current.focus();
     }
-  }, []);  // When command history changes, scroll to the bottom of the terminal
+  }, []);  // When command history changes, scroll to the bottom of the terminal and ensure focus
   useEffect(() => {
     if (terminalRef.current) {
       terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
+      
+      // Ensure input is focused when history changes
+      if (inputRef.current && !isMinimized) {
+        inputRef.current.focus();
+      }
+      
+      // Set up a MutationObserver to detect DOM changes in the terminal
+      // and ensure input stays focused
+      const observer = new MutationObserver(() => {
+        if (inputRef.current && document.activeElement !== inputRef.current && !isMinimized) {
+          inputRef.current.focus();
+        }
+      });
+      
+      observer.observe(terminalRef.current, { 
+        childList: true, 
+        subtree: true,
+        characterData: true
+      });
+      
+      return () => observer.disconnect();
     }
-  }, [history]);
-  
-  // Maintain focus when fullscreen state changes
+  }, [history, isMinimized]);
+    // Maintain focus when minimize state changes
   useEffect(() => {
     if (inputRef.current && !isMinimized) {
       setTimeout(() => {
         inputRef.current?.focus();
       }, 100);
     }
-  }, [isFullscreen, isMinimized]);
-  
-  // Additional focus handler to ensure terminal input stays focused
+  }, [isMinimized]);
+    // Additional focus handler to ensure terminal input stays focused
   useEffect(() => {
     const refocusInput = () => {
       if (inputRef.current && document.activeElement !== inputRef.current && !isMinimized) {
@@ -634,14 +646,34 @@ Type 'help <command>' for more information on a specific command`;
     if (terminalElement) {
       terminalElement.addEventListener('click', refocusInput);
       terminalElement.addEventListener('touchend', refocusInput);
-    }
-    
-    return () => {
-      if (terminalElement) {
-        terminalElement.removeEventListener('click', refocusInput);
-        terminalElement.removeEventListener('touchend', refocusInput);
+      
+      // Check for focus loss and recover it
+      const handleFocusOut = () => {
+        // Use setTimeout to ensure this happens after other focus events
+        setTimeout(refocusInput, 10);
+      };
+      
+      const inputElement = inputRef.current;
+      if (inputElement) {
+        inputElement.addEventListener('blur', handleFocusOut);
       }
-    };
+      
+      // Periodically check if focus needs to be restored (as a fallback)
+      const focusInterval = setInterval(refocusInput, 500);
+      
+      return () => {
+        if (terminalElement) {
+          terminalElement.removeEventListener('click', refocusInput);
+          terminalElement.removeEventListener('touchend', refocusInput);
+        }
+        
+        if (inputElement) {
+          inputElement.removeEventListener('blur', handleFocusOut);
+        }
+        
+        clearInterval(focusInterval);
+      };
+    }
   }, [isMinimized]);
   if (isMinimized) {
     return (
@@ -678,8 +710,7 @@ Type 'help <command>' for more information on a specific command`;
           Terminal Demo
         </h2>
       </div>
-        <FadeIn direction="up" delay={100}>
-        <div className={isFullscreen ? 'terminal-fullscreen' : ''}>
+        <FadeIn direction="up" delay={100}>        <div>
           <Card className="terminal-window border">
             {/* Glowing effect */}
             <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-primary/10 pointer-events-none"></div>
@@ -692,13 +723,9 @@ Type 'help <command>' for more information on a specific command`;
                   <div className="w-3 h-3 rounded-full bg-green-500"></div>
                 </div>
                 <span className="font-mono text-sm ml-2 text-gray-300">anup@anup-server:~</span>
-              </div>
-              <div className="flex items-center gap-2">
+              </div>              <div className="flex items-center gap-2">
                 <Button variant="ghost" size="icon" onClick={toggleMinimize} className="h-6 w-6 text-gray-400 hover:text-white hover:bg-gray-700/50">
                   <FaMinus className="h-3 w-3" />
-                </Button>
-                <Button variant="ghost" size="icon" onClick={toggleFullscreen} className="h-6 w-6 text-gray-400 hover:text-white hover:bg-gray-700/50">
-                  <FaExpand className="h-3 w-3" />
                 </Button>
                 <Button variant="ghost" size="icon" onClick={() => runCommand("clear")} className="h-6 w-6 text-gray-400 hover:text-white hover:bg-gray-700/50">
                   <FaTimes className="h-3 w-3" />
@@ -735,13 +762,26 @@ Type 'help <command>' for more information on a specific command`;
                     )}
                   </div>
                 ))}                <div className="flex items-center gap-2">
-                  <span className="terminal-prompt">anup@anup-server:~$</span>
-                  <input
+                  <span className="terminal-prompt">anup@anup-server:~$</span>                  <input
                     ref={inputRef}
                     type="text"
                     value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                    onKeyDown={handleKeyDown}
+                    onChange={(e) => {
+                      setInput(e.target.value);
+                      // Ensure input stays focused
+                      e.currentTarget.focus();
+                    }}
+                    onKeyDown={(e) => {
+                      handleKeyDown(e);
+                      // Ensure we maintain focus after key events
+                      setTimeout(() => inputRef.current?.focus(), 0);
+                    }}
+                    onBlur={(e) => {
+                      // Recover focus if it's within the terminal container
+                      if (terminalRef.current?.contains(e.relatedTarget as Node)) {
+                        setTimeout(() => inputRef.current?.focus(), 0);
+                      }
+                    }}
                     className="bg-transparent border-none outline-none flex-1 text-white caret-green-500"
                     disabled={isLoading}
                     spellCheck="false"
@@ -750,28 +790,16 @@ Type 'help <command>' for more information on a specific command`;
                   />
                   {isLoading && <span className="animate-pulse text-green-500">■</span>}
                 </div>              </div>
-            </div>
-          </Card>
-          
-          {isFullscreen && (
-            <div className="absolute bottom-4 right-4">
-              <Button onClick={toggleFullscreen} variant="secondary">
-                Exit Fullscreen
-              </Button>
-            </div>
-          )}
+            </div>          </Card>
         </div>
-        
-        {!isFullscreen && (
           <div className="mt-4 p-3 rounded-lg bg-black/5 border border-border/40 text-muted-foreground text-sm">
-            <div className="flex flex-wrap gap-2 items-center">
-              <span className="text-xs font-medium">Try commands:</span>
-              {['ls', 'cat /home/anup/notes.txt', 'docker ps', 'sysinfo', 'help'].map((cmd) => (
-                <code key={cmd} className="px-2 py-1 bg-primary/10 rounded text-xs font-mono text-primary">{cmd}</code>
-              ))}
-            </div>
+          <div className="flex flex-wrap gap-2 items-center">
+            <span className="text-xs font-medium">Try commands:</span>
+            {['ls', 'cat /home/anup/notes.txt', 'docker ps', 'sysinfo', 'help'].map((cmd) => (
+              <code key={cmd} className="px-2 py-1 bg-primary/10 rounded text-xs font-mono text-primary">{cmd}</code>
+            ))}
           </div>
-        )}
+        </div>
       </FadeIn>
     </section>
   );
