@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef, KeyboardEvent } from "react";
+import React, { useEffect, useState, useRef, KeyboardEvent } from "react";
 import { FadeIn } from "./ui/animations";
 import { Card, CardContent } from "./ui/card";
 import { Button } from "./ui/button";
@@ -20,7 +20,7 @@ interface CommandInfo {
   examples?: string[];
 }
 
-const Terminal = () => {
+const Terminal = (): React.ReactNode => {
   const [input, setInput] = useState<string>("");
   const [history, setHistory] = useState<CommandHistory[]>([
     {
@@ -495,8 +495,7 @@ Type 'help <command>' for more information on a specific command`;
           { command: trimmedCmd, output, isError },
         ]);
       }
-      
-      setInput("");
+        setInput("");
       setIsLoading(false);
       setPosition(history.length + 1);
       
@@ -505,6 +504,10 @@ Type 'help <command>' for more information on a specific command`;
         setTimeout(() => {
           if (terminalRef.current) {
             terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
+          }
+          // Re-focus the input field after command execution
+          if (inputRef.current) {
+            inputRef.current.focus();
           }
         }, 0);
       }
@@ -556,17 +559,25 @@ Type 'help <command>' for more information on a specific command`;
       setHistory([]);
     }
   };
-
   const toggleFullscreen = () => {
     setIsFullscreen(!isFullscreen);
+    
+    // Focus the input after toggling fullscreen
+    setTimeout(() => {
+      if (inputRef.current) {
+        inputRef.current.focus();
+      }
+    }, 50);
   };
 
   const toggleMinimize = () => {
     setIsMinimized(!isMinimized);
   };
-
   // Focus the input when clicking anywhere in the terminal
-  const handleTerminalClick = () => {
+  const handleTerminalClick = (e: React.MouseEvent) => {
+    // Prevent event propagation to stop parent elements from handling the event
+    e.stopPropagation();
+    
     if (inputRef.current) {
       inputRef.current.focus();
     }
@@ -575,21 +586,63 @@ Type 'help <command>' for more information on a specific command`;
   // Copy text to clipboard
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
-  };
+  };  // Handle ESC key for fullscreen exit
+  useEffect(() => {
+    const handleKeyDown = (e: globalThis.KeyboardEvent) => {
+      if (e.key === 'Escape' && isFullscreen) {
+        setIsFullscreen(false);
+      }
+    };
+    
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isFullscreen]);
 
   useEffect(() => {
     // Auto-focus on input when component mounts
     if (inputRef.current) {
       inputRef.current.focus();
     }
-  }, []);
-
-  // When command history changes, scroll to the bottom of the terminal
+  }, []);  // When command history changes, scroll to the bottom of the terminal
   useEffect(() => {
     if (terminalRef.current) {
       terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
     }
   }, [history]);
+  
+  // Maintain focus when fullscreen state changes
+  useEffect(() => {
+    if (inputRef.current && !isMinimized) {
+      setTimeout(() => {
+        inputRef.current?.focus();
+      }, 100);
+    }
+  }, [isFullscreen, isMinimized]);
+  
+  // Additional focus handler to ensure terminal input stays focused
+  useEffect(() => {
+    const refocusInput = () => {
+      if (inputRef.current && document.activeElement !== inputRef.current && !isMinimized) {
+        inputRef.current.focus();
+      }
+    };
+    
+    // Refocus after any user interaction with the terminal
+    const terminalElement = terminalRef.current;
+    if (terminalElement) {
+      terminalElement.addEventListener('click', refocusInput);
+      terminalElement.addEventListener('touchend', refocusInput);
+    }
+    
+    return () => {
+      if (terminalElement) {
+        terminalElement.removeEventListener('click', refocusInput);
+        terminalElement.removeEventListener('touchend', refocusInput);
+      }
+    };
+  }, [isMinimized]);
   if (isMinimized) {
     return (
       <section id="terminal-demo" className="scroll-mt-16">
@@ -652,11 +705,12 @@ Type 'help <command>' for more information on a specific command`;
                 </Button>
               </div>
             </div>
-            <div className="terminal-body">
-              <div 
+            <div className="terminal-body">              <div 
                 ref={terminalRef} 
                 className="terminal-content" 
                 onClick={handleTerminalClick}
+                onMouseDown={(e) => e.stopPropagation()}
+                onWheel={(e) => e.stopPropagation()}
               >
                 {history.map((item: CommandHistory, idx: number) => (
                   <div key={idx} className="mb-2 group">
