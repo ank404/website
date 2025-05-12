@@ -2,7 +2,117 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  :root {
+    --background: 220, 23%, 97%;
+    --foreground: 222, 47%, 11%;
+    
+    --card: 0, 0%, 100%;
+    --card-foreground: 222, 47%, 11%;
+    
+    --popover: 0, 0%, 100%;
+    --popover-foreground: 222, 47%, 11%;
+    
+    --primary: 221, 83%, 53%;
+    --primary-foreground: 210, 40%, 98%;
+    
+    --secondary: 210, 40%, 96.1%;
+    --secondary-foreground: 222, 47%, 11%;
+    
+    --muted: 210, 40%, 96.1%;
+    --muted-foreground: 215.4, 16.3%, 46.9%;
+    
+    --accent: 210, 40%, 96.1%;
+    --accent-foreground: 222, 47%, 11%;
+    
+    --destructive: 0, 84.2%, 60.2%;
+    --destructive-foreground: 210, 40%, 98%;
+
+    --border: 214.3, 31.8%, 91.4%;
+    --input: 214.3, 31.8%, 91.4%;
+    --ring: 221, 83%, 53%;
+    
+    --radius: 0.5rem;
+    
+    /* Custom theme colors */
+    --highlight: 221, 83%, 53%;
+    --highlight-foreground: 221, 83%, 53%;
+    
+    /* Gradient colors */
+    --gradient-start: 221, 83%, 53%;
+    --gradient-end: 262, 83%, 58%;
+    
+    /* Mouse aura color */
+    --mouse-aura-color-1: 221, 83%, 53%, 0.3;
+    --mouse-aura-color-2: 221, 83%, 53%, 0.15;
+    --mouse-aura-color-3: 221, 83%, 53%, 0;
+  }
+  
+  .dark {
+    --background: 222, 47%, 11%;
+    --foreground: 213, 31%, 91%;
+    
+    --card: 222, 47%, 13%;
+    --card-foreground: 213, 31%, 91%;
+    
+    --popover: 222, 47%, 13%;
+    --popover-foreground: 213, 31%, 91%;
+    
+    --primary: 221, 83%, 65%;
+    --primary-foreground: 222, 47%, 11%;
+    
+    --secondary: 222, 47%, 18%;
+    --secondary-foreground: 210, 40%, 98%;
+    
+    --muted: 223, 47%, 18%;
+    --muted-foreground: 215.4, 16.3%, 76.9%;
+    
+    --accent: 222, 47%, 18%;
+    --accent-foreground: 210, 40%, 98%;
+    
+    --destructive: 0, 84.2%, 60.2%;
+    --destructive-foreground: 210, 40%, 98%;
+    
+    --border: 217.2, 32.6%, 22%;
+    --input: 217.2, 32.6%, 22%;
+    --ring: 221, 83%, 65%;
+    
+    /* Custom theme colors for dark mode */
+    --highlight: 221, 83%, 65%;
+    --highlight-foreground: 221, 83%, 65%;
+    
+    /* Gradient colors for dark mode */
+    --gradient-start: 221, 83%, 65%;
+    --gradient-end: 262, 83%, 70%;
+    
+    /* Mouse aura color for dark mode */
+    --mouse-aura-color-1: 221, 83%, 65%, 0.3;
+    --mouse-aura-color-2: 221, 83%, 65%, 0.15;
+    --mouse-aura-color-3: 221, 83%, 65%, 0;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
+  }
+}
+
 @layer components {
+  .font-heading {
+    font-family: var(--font-space-grotesk), system-ui, sans-serif;
+  }
+  
+  .font-sans {
+    font-family: var(--font-poppins), var(--font-inter), system-ui, sans-serif;
+  }
+  
   .mouse-aura {
     position: fixed;
     inset: 0;
@@ -10,9 +120,9 @@
     z-index: 50;
     background-image: radial-gradient(
       circle at var(--mouse-x) var(--mouse-y),
-      rgba(63, 81, 181, 0.3) 0%,
-      rgba(63, 81, 181, 0.15) 30%,
-      rgba(63, 81, 181, 0) 50%
+      hsla(var(--mouse-aura-color-1)) 0%,
+      hsla(var(--mouse-aura-color-2)) 30%,
+      hsla(var(--mouse-aura-color-3)) 50%
     );
     transition: background-position 0.3s ease;
 
@@ -20,12 +130,21 @@
     @media (hover: none) and (pointer: coarse) {
       background-image: radial-gradient(
         circle at top left,
-        rgba(63, 81, 181, 0.3) 0%,
-        rgba(63, 81, 181, 0.15) 30%,
-        rgba(63, 81, 181, 0) 50%
+        hsla(var(--mouse-aura-color-1)) 0%,
+        hsla(var(--mouse-aura-color-2)) 30%,
+        hsla(var(--mouse-aura-color-3)) 50%
       );
     }
   }
+  
+  .highlight-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-[hsl(var(--gradient-start))] to-[hsl(var(--gradient-end))];
+  }
+  
+  .page-text {
+    @apply text-foreground/90;
+  }
+}
 
   /* Lenis smooth scroll styles */
   html.lenis {
@@ -82,7 +201,6 @@
   .fancy-link:hover::after {
     width: 100%;
   }
-}
 
 /* Animation keyframes */
 @keyframes fade-in-up {

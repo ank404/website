@@ -78,27 +78,32 @@ export default function Skills() {
 
   return (
     <section id="skills" className="scroll-mt-16">
-      <div className="sticky top-0 z-20 -mx-6 mb-4 w-screen bg-background/0 px-6 py-5 backdrop-blur md:-mx-12 md:px-12 lg:sr-only lg:relative lg:top-auto lg:mx-auto lg:w-full lg:px-0 lg:py-0 lg:opacity-0">
-        <h2 className="text-sm font-bold uppercase tracking-widest lg:sr-only">
-          Skills
+      <div className="sticky top-0 z-20 -mx-6 mb-8 w-screen bg-background/80 px-6 py-5 backdrop-blur md:-mx-12 md:px-12 lg:sr-only lg:relative lg:top-auto lg:mx-auto lg:w-full lg:px-0 lg:py-0 lg:opacity-0">
+        <h2 className="text-sm font-bold uppercase tracking-widest text-primary lg:sr-only">
+          Skills & Expertise
         </h2>
       </div>
       
       <FadeIn direction="up" delay={100}>
-        <div className="mb-6">
-          <h3 className="text-xl font-bold mb-3">Technical Expertise</h3>
-          <p className="text-muted-foreground">
-            My technical skills span system administration, DevOps practices, cloud platforms, and security. 
-            Click on any category below to filter or on a specific skill to see more details.
-          </p>
+        <div className="mb-8 relative">
+          {/* Decorative element */}
+          <div className="absolute left-0 top-0 h-12 w-1 bg-gradient-to-b from-primary/80 to-primary/0 rounded-full hidden lg:block"></div>
+          
+          <div className="lg:pl-8">
+            <h3 className="text-2xl font-bold mb-3 font-heading">Technical Expertise</h3>
+            <p className="text-muted-foreground">
+              My technical skills span system administration, DevOps practices, cloud platforms, and security. 
+              Click on any category below to filter or on a specific skill to see more details.
+            </p>
+          </div>
         </div>
       </FadeIn>
       
       <FadeIn direction="up" delay={200}>
-        <div className="flex flex-wrap gap-2 mb-8">
+        <div className="flex flex-wrap gap-2 mb-8 p-4 border border-border bg-card/50 backdrop-blur-sm rounded-lg">
           {categories.map((category, index) => (
             <Badge 
-              key={category} 
+              key={category}
               variant={activeCategory === category ? "default" : "outline"}
               className="cursor-pointer text-sm px-3 py-1"
               onClick={() => setActiveCategory(category)}
@@ -108,41 +113,72 @@ export default function Skills() {
           ))}
         </div>
       </FadeIn>
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         {filteredSkills.map((skill, index) => (
           <FadeIn key={skill.name} direction="up" delay={300 + index * 50} className="h-full">
             <Card 
-              className={`cursor-pointer h-full border-l-4 hover:shadow-md transition-all ${
-                activeSkill?.name === skill.name 
-                ? `border-l-primary ${categoryColors[skill.category]}` 
-                : `border-l-muted-foreground/20 hover:border-l-primary/50`
-              }`}
+              className={`group cursor-pointer h-full hover:shadow-lg transition-all duration-300 
+                ${activeSkill?.name === skill.name 
+                  ? 'border-primary/50 shadow-md bg-card/80' 
+                  : 'hover:border-primary/30 bg-card/50'
+                }`}
               onClick={() => setActiveSkill(activeSkill?.name === skill.name ? null : skill)}
             >
-              <CardContent className="p-4">
-                <div className="flex justify-between items-center mb-2">
-                  <h4 className="font-semibold">{skill.name}</h4>
-                  <Badge variant="outline" className={`${categoryColors[skill.category]} border-none`}>
-                    {skill.level}/10
+              <CardContent className="p-5 relative overflow-hidden">
+                {/* Decorative skill level indicator */}
+                <div 
+                  className={`absolute top-0 left-0 h-1 bg-gradient-to-r from-primary to-primary/20 transition-all duration-500 rounded-t-sm`}
+                  style={{ width: `${skill.level * 10}%` }}
+                />
+                
+                <div className="flex justify-between items-center mb-3">
+                  <h4 className="font-semibold text-lg">{skill.name}</h4>
+                  <div className="flex items-center space-x-1">
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <div 
+                        key={i} 
+                        className={`w-1.5 h-4 rounded-full transition-all ${
+                          i < Math.ceil(skill.level / 2) 
+                            ? 'bg-primary' 
+                            : 'bg-muted'
+                        }`} 
+                      />
+                    ))}
+                  </div>
+                </div>
+                
+                <div className="flex items-center justify-between">
+                  <Badge 
+                    variant="outline" 
+                    className={`text-xs ${categoryColors[skill.category]} border-none`}
+                  >
+                    {categoryLabels[skill.category]}
                   </Badge>
+                  <span className="text-xs text-muted-foreground font-medium">
+                    {skill.level >= 8 ? 'Expert' : skill.level >= 6 ? 'Advanced' : 'Proficient'}
+                  </span>
                 </div>
                 
-                <div className="w-full bg-muted h-2 rounded-full overflow-hidden">
-                  <div 
-                    className="bg-primary h-full rounded-full transition-all duration-500" 
-                    style={{ width: `${skill.level * 10}%` }}
-                  />
+                <div 
+                  className={`mt-3 overflow-hidden transition-all duration-300 text-muted-foreground text-sm ${
+                    activeSkill?.name === skill.name ? 'max-h-40 opacity-100' : 'max-h-0 opacity-0'
+                  }`}
+                >
+                  <p className="pt-2 border-t border-border/50 mt-2">{skill.description}</p>
                 </div>
-                
-                {activeSkill?.name === skill.name && (
-                  <p className="mt-3 text-sm text-muted-foreground">{skill.description}</p>
-                )}
               </CardContent>
             </Card>
           </FadeIn>
         ))}
       </div>
+      
+      <FadeIn direction="up" delay={500}>
+        <div className="mt-12 text-center">
+          <p className="text-sm text-muted-foreground">
+            Beyond technical skills, I value continuous learning, collaboration, and staying current with industry trends.
+          </p>
+        </div>
+      </FadeIn>
     </section>
   );
 }

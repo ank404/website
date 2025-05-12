@@ -85,79 +85,89 @@ export default function Testimonials() {
   const handleFilterChange = (filter: "all" | "colleague" | "client" | "manager") => {
     setActiveFilter(filter);
   };
-
   return (
     <section id="testimonials" className="scroll-mt-16">
-      <div className="sticky top-0 z-20 -mx-6 mb-4 w-screen bg-background/0 px-6 py-5 backdrop-blur md:-mx-12 md:px-12 lg:sr-only lg:relative lg:top-auto lg:mx-auto lg:w-full lg:px-0 lg:py-0 lg:opacity-0">
-        <h2 className="text-sm font-bold uppercase tracking-widest lg:sr-only">
+      <div className="sticky top-0 z-20 -mx-6 mb-8 w-screen bg-background/80 px-6 py-5 backdrop-blur md:-mx-12 md:px-12 lg:sr-only lg:relative lg:top-auto lg:mx-auto lg:w-full lg:px-0 lg:py-0 lg:opacity-0">
+        <h2 className="text-sm font-bold uppercase tracking-widest text-primary lg:sr-only">
           Testimonials
         </h2>
       </div>
 
       <FadeIn direction="up" delay={100}>
-        <div className="mb-6">
-          <h3 className="text-xl font-bold mb-3">What People Say</h3>
-          <p className="text-muted-foreground">
-            Feedback from colleagues, clients, and managers I've had the pleasure of working with.
-          </p>
+        <div className="mb-8 relative">
+          {/* Decorative element */}
+          <div className="absolute left-0 top-0 h-12 w-1 bg-gradient-to-b from-primary/80 to-primary/0 rounded-full hidden lg:block"></div>
+          
+          <div className="lg:pl-8">
+            <h3 className="text-2xl font-bold mb-3 font-heading">What People Say</h3>
+            <p className="text-muted-foreground">
+              Feedback from colleagues, clients, and managers I've had the pleasure of working with.
+            </p>
+          </div>
         </div>
-      </FadeIn>
-
-      <div className="mb-6 flex flex-wrap gap-3">
+      </FadeIn>      <div className="mb-8 flex flex-wrap gap-3 p-4 border border-border bg-card/50 backdrop-blur-sm rounded-lg">
         <button
           onClick={() => handleFilterChange("all")}
-          className={`px-4 py-1 rounded-full text-sm transition-all ${
+          className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-300 ${
             activeFilter === "all"
-              ? "bg-primary text-primary-foreground"
-              : "bg-muted text-muted-foreground hover:bg-muted/80"
+              ? "bg-primary text-primary-foreground shadow-sm" 
+              : "bg-muted/50 text-muted-foreground hover:bg-primary/10"
           }`}
         >
-          All
+          All Testimonials
         </button>
         <button
           onClick={() => handleFilterChange("colleague")}
-          className={`px-4 py-1 rounded-full text-sm transition-all ${
+          className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-300 ${
             activeFilter === "colleague"
-              ? "bg-primary text-primary-foreground"
-              : "bg-muted text-muted-foreground hover:bg-muted/80"
+              ? "bg-primary text-primary-foreground shadow-sm"
+              : "bg-muted/50 text-muted-foreground hover:bg-primary/10"
           }`}
         >
-          Colleagues
+          From Colleagues
         </button>
         <button
           onClick={() => handleFilterChange("client")}
-          className={`px-4 py-1 rounded-full text-sm transition-all ${
+          className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-300 ${
             activeFilter === "client"
-              ? "bg-primary text-primary-foreground"
-              : "bg-muted text-muted-foreground hover:bg-muted/80"
+              ? "bg-primary text-primary-foreground shadow-sm"
+              : "bg-muted/50 text-muted-foreground hover:bg-primary/10"
           }`}
         >
-          Clients
+          From Clients
         </button>
         <button
           onClick={() => handleFilterChange("manager")}
-          className={`px-4 py-1 rounded-full text-sm transition-all ${
+          className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-300 ${
             activeFilter === "manager"
-              ? "bg-primary text-primary-foreground"
-              : "bg-muted text-muted-foreground hover:bg-muted/80"
+              ? "bg-primary text-primary-foreground shadow-sm"
+              : "bg-muted/50 text-muted-foreground hover:bg-primary/10"
           }`}
         >
-          Managers
+          From Managers
         </button>
-      </div>
-
-      <div className="relative">
+      </div>      <div className="relative">
         <FadeIn direction="up" delay={200} key={currentTestimonial.id}>
-          <Card className="border-none bg-gradient-to-br from-primary/5 to-primary/10">
-            <CardContent className="p-8">
-              <div className="flex flex-col gap-6">
+          <Card className="border border-border/40 bg-gradient-to-br from-primary/5 via-primary/2 to-transparent shadow-sm">
+            <CardContent className="p-8 relative">
+              {/* Decorative elements */}
+              <div className="absolute top-4 right-4 opacity-40">
+                <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-primary/10">
+                  <path d="M0 30.0005V60.0005H30H60V30.0005V0.000488281H30H0V30.0005ZM50 10.0005V20.0005H40H30V30.0005V40.0005H40H50V30.0005V20.0005H60H70V10.0005V0.000488281H60H50V10.0005ZM20 30.0005V40.0005H10H0V30.0005V20.0005H10H20V30.0005Z" fill="currentColor"/>
+                </svg>
+              </div>
+              
+              <div className="flex flex-col gap-6 relative z-10">
                 <div className="flex justify-between items-start">
-                  <FaQuoteLeft className="text-primary/20 h-8 w-8" />
+                  <div className="p-3 bg-primary/10 rounded-full">
+                    <FaQuoteLeft className="text-primary h-6 w-6" />
+                  </div>
                 </div>
-                <p className="text-lg italic">"{currentTestimonial.testimonial}"</p>
                 
-                <div className="flex items-center gap-4 mt-4">
-                  <div className="relative h-12 w-12 rounded-full overflow-hidden bg-muted flex items-center justify-center text-muted-foreground">
+                <p className="text-lg italic leading-relaxed">"{currentTestimonial.testimonial}"</p>
+                
+                <div className="flex items-center gap-4 mt-4 pt-4 border-t border-border/30">
+                  <div className="relative h-14 w-14 rounded-full overflow-hidden bg-muted flex items-center justify-center text-muted-foreground shadow-sm border-2 border-white dark:border-gray-800">
                     {currentTestimonial.image ? (
                       <Image
                         src={currentTestimonial.image}
@@ -166,12 +176,12 @@ export default function Testimonials() {
                         className="object-cover"
                       />
                     ) : (
-                      currentTestimonial.name.charAt(0)
+                      <span className="text-lg font-semibold">{currentTestimonial.name.charAt(0)}</span>
                     )}
                   </div>
                   
                   <div>
-                    <h4 className="font-semibold">{currentTestimonial.name}</h4>
+                    <h4 className="font-semibold font-heading">{currentTestimonial.name}</h4>
                     <p className="text-sm text-muted-foreground">
                       {currentTestimonial.position}, {currentTestimonial.company}
                     </p>
@@ -181,21 +191,28 @@ export default function Testimonials() {
             </CardContent>
           </Card>
         </FadeIn>
-        
-        {activeTestimonials.length > 1 && (
-          <div className="flex justify-center gap-2 mt-4">
+          {activeTestimonials.length > 1 && (
+          <div className="flex justify-center gap-2 mt-6">
             {activeTestimonials.map((_, index) => (
               <button
                 key={index}
                 onClick={() => handleDotClick(index)}
-                className={`w-2 h-2 rounded-full transition-all ${
-                  index === currentIndex ? "bg-primary w-6" : "bg-muted hover:bg-primary/50"
+                className={`h-2 rounded-full transition-all duration-300 ${
+                  index === currentIndex 
+                    ? "bg-primary/80 w-8 shadow-sm" 
+                    : "bg-muted w-2 hover:bg-primary/40 hover:w-4"
                 }`}
                 aria-label={`Go to testimonial ${index + 1}`}
               />
             ))}
           </div>
         )}
+      </div>
+      
+      <div className="mt-8 text-center">
+        <p className="text-sm text-muted-foreground">
+          Testimonials are collected from my previous work experiences and collaborations.
+        </p>
       </div>
     </section>
   );

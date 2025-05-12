@@ -82,21 +82,42 @@ export default function Home() {
           }
         `}</style>
       </Head>
-      <div className="mx-auto min-h-screen max-w-screen-xl px-6 py-12 md:px-12 md:py-20 lg:px-24 lg:py-0">
-        <div ref={auraRef} className="mouse-aura" />
-        <div className="lg:flex lg:justify-between lg:gap-4">
-          <Nav />          <main className="flex flex-col pt-6 lg:pt-24 lg:w-1/2 lg:py-24 gap-8">
+      {/* Background Effects */}
+      <div className="fixed inset-0 z-[-2] bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-background via-background to-background/95"></div>
+      <div ref={auraRef} className="mouse-aura" />
+      
+      {/* Decorative grid lines */}
+      <div className="fixed inset-0 z-[-1] grid grid-cols-6 md:grid-cols-12">
+        {Array.from({ length: 12 }).map((_, index) => (
+          <div key={index} className="border-r border-foreground/[0.03] last:border-r-0"></div>
+        ))}
+      </div>
+      
+      <div className="mx-auto min-h-screen max-w-screen-2xl px-4 py-8 md:px-8 md:py-12 lg:px-12 lg:py-0">
+        <div className="lg:flex lg:justify-between lg:gap-8">
+          <Nav />
+          
+          <main className="flex flex-col pt-6 lg:pt-24 lg:w-3/5 lg:py-24 gap-16">
             <About />
             <ExpCard />
             <Projects />
             <Skills />
-            <Terminal />
-            <LiveDashboard />
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+              <Terminal />
+              <LiveDashboard />
+            </div>
             <CloudArchitecture />
             <Certifications />
             <Testimonials />
             <ResumeDownload />
             <Contact />
+            
+            <footer className="mt-24 text-sm text-muted-foreground">
+              <div className="border-t border-border pt-6">
+                <p>© {new Date().getFullYear()} Anup Khanal. All rights reserved.</p>
+                <p className="mt-1">Built with Next.js, Tailwind CSS and React</p>
+              </div>
+            </footer>
           </main>
         </div>
       </div>

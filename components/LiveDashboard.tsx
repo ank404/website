@@ -400,80 +400,90 @@ const LiveDashboard = () => {
 
   return (
     <section id="infrastructure-dashboard" className="scroll-mt-16">
-      <div className="sticky top-0 z-20 -mx-6 mb-4 w-screen bg-background/0 px-6 py-5 backdrop-blur md:-mx-12 md:px-12 lg:sr-only lg:relative lg:top-auto lg:mx-auto lg:w-full lg:px-0 lg:py-0 lg:opacity-0">
-        <h2 className="text-sm font-bold uppercase tracking-widest lg:sr-only">
+      <div className="sticky top-0 z-20 -mx-6 mb-8 w-screen bg-background/80 px-6 py-5 backdrop-blur md:-mx-12 md:px-12 lg:sr-only lg:relative lg:top-auto lg:mx-auto lg:w-full lg:px-0 lg:py-0 lg:opacity-0">
+        <h2 className="text-sm font-bold uppercase tracking-widest text-primary lg:sr-only">
           Infrastructure Dashboard
         </h2>
       </div>
 
       <FadeIn direction="up" delay={100}>
-        <div className="mb-6">
-          <h3 className="text-xl font-bold mb-3">Live Infrastructure Dashboard</h3>
-          <p className="text-muted-foreground">
-            Experience a real-time view of a cloud infrastructure environment. Monitor server health, 
-            view detailed metrics, and simulate incident response scenarios.
-          </p>
+        <div className="mb-8 relative">
+          {/* Decorative element */}
+          <div className="absolute left-0 top-0 h-12 w-1 bg-gradient-to-b from-primary/80 to-primary/0 rounded-full hidden lg:block"></div>
+          
+          <div className="lg:pl-8">
+            <h3 className="text-2xl font-bold mb-3 font-heading">Live Infrastructure Dashboard</h3>
+            <p className="text-muted-foreground">
+              Experience a real-time view of a cloud infrastructure environment. Monitor server health, 
+              view detailed metrics, and simulate incident response scenarios.
+            </p>
+          </div>
         </div>
-      </FadeIn>
-
-      <FadeIn direction="up" delay={200}>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-          <Card className={`bg-gradient-to-br from-green-50 to-green-100 dark:from-green-950 dark:to-green-900 border-green-200 dark:border-green-800`}>
-            <CardContent className="p-4 flex items-center justify-between">
+      </FadeIn>      <FadeIn direction="up" delay={200}>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-5 mb-8">
+          <Card className="overflow-hidden border-green-200/50 dark:border-green-800/50 relative group">
+            <div className="absolute inset-0 bg-gradient-to-br from-green-50/80 to-green-100/30 dark:from-green-950/80 dark:to-green-900/30 opacity-80 group-hover:opacity-100 transition-opacity"></div>
+            <div className="absolute top-0 left-0 h-1 w-full bg-green-500/70"></div>
+            <CardContent className="p-5 flex items-center justify-between relative z-10">
               <div>
-                <p className="text-sm text-muted-foreground">Healthy</p>
-                <h4 className="text-2xl font-bold">{totalMetrics.healthy}</h4>
+                <p className="text-xs font-medium uppercase tracking-wider text-green-800 dark:text-green-400 mb-1">Healthy</p>
+                <h4 className="text-3xl font-bold font-heading">{totalMetrics.healthy}</h4>
               </div>
-              <div className="bg-green-200 dark:bg-green-800 p-2 rounded-full">
+              <div className="bg-green-100 dark:bg-green-800/70 p-3 rounded-full shadow-sm">
                 <FaCheckCircle className="h-6 w-6 text-green-600 dark:text-green-400" />
               </div>
             </CardContent>
           </Card>
           
-          <Card className={`bg-gradient-to-br from-yellow-50 to-yellow-100 dark:from-yellow-950 dark:to-yellow-900 border-yellow-200 dark:border-yellow-800`}>
-            <CardContent className="p-4 flex items-center justify-between">
+          <Card className="overflow-hidden border-yellow-200/50 dark:border-yellow-800/50 relative group">
+            <div className="absolute inset-0 bg-gradient-to-br from-yellow-50/80 to-yellow-100/30 dark:from-yellow-950/80 dark:to-yellow-900/30 opacity-80 group-hover:opacity-100 transition-opacity"></div>
+            <div className="absolute top-0 left-0 h-1 w-full bg-yellow-500/70"></div>
+            <CardContent className="p-5 flex items-center justify-between relative z-10">
               <div>
-                <p className="text-sm text-muted-foreground">Warning</p>
-                <h4 className="text-2xl font-bold">{totalMetrics.warning}</h4>
+                <p className="text-xs font-medium uppercase tracking-wider text-yellow-800 dark:text-yellow-400 mb-1">Warning</p>
+                <h4 className="text-3xl font-bold font-heading">{totalMetrics.warning}</h4>
               </div>
-              <div className="bg-yellow-200 dark:bg-yellow-800 p-2 rounded-full">
+              <div className="bg-yellow-100 dark:bg-yellow-800/70 p-3 rounded-full shadow-sm">
                 <FaExclamationTriangle className="h-6 w-6 text-yellow-600 dark:text-yellow-400" />
               </div>
             </CardContent>
           </Card>
           
-          <Card className={`bg-gradient-to-br from-red-50 to-red-100 dark:from-red-950 dark:to-red-900 border-red-200 dark:border-red-800`}>
-            <CardContent className="p-4 flex items-center justify-between">
+          <Card className="overflow-hidden border-red-200/50 dark:border-red-800/50 relative group">
+            <div className="absolute inset-0 bg-gradient-to-br from-red-50/80 to-red-100/30 dark:from-red-950/80 dark:to-red-900/30 opacity-80 group-hover:opacity-100 transition-opacity"></div>
+            <div className="absolute top-0 left-0 h-1 w-full bg-red-500/70"></div>
+            <CardContent className="p-5 flex items-center justify-between relative z-10">
               <div>
-                <p className="text-sm text-muted-foreground">Critical</p>
-                <h4 className="text-2xl font-bold">{totalMetrics.critical}</h4>
+                <p className="text-xs font-medium uppercase tracking-wider text-red-800 dark:text-red-400 mb-1">Critical</p>
+                <h4 className="text-3xl font-bold font-heading">{totalMetrics.critical}</h4>
               </div>
-              <div className="bg-red-200 dark:bg-red-800 p-2 rounded-full">
+              <div className="bg-red-100 dark:bg-red-800/70 p-3 rounded-full shadow-sm">
                 <FaExclamationTriangle className="h-6 w-6 text-red-600 dark:text-red-400" />
               </div>
             </CardContent>
           </Card>
           
-          <Card className={`bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-900 border-slate-200 dark:border-slate-700`}>
-            <CardContent className="p-4 flex items-center justify-between">
+          <Card className="overflow-hidden border-primary/20 dark:border-primary/20 relative group">
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-primary/10 dark:from-primary/10 dark:to-primary/5 opacity-80 group-hover:opacity-100 transition-opacity"></div>
+            <div className="absolute top-0 left-0 h-1 w-full bg-primary/50"></div>
+            <CardContent className="p-5 flex items-center justify-between relative z-10">
               <div>
-                <p className="text-sm text-muted-foreground">Active Incidents</p>
-                <h4 className="text-2xl font-bold">{totalMetrics.incidents}</h4>
+                <p className="text-xs font-medium uppercase tracking-wider text-primary/80 mb-1">Active Incidents</p>
+                <h4 className="text-3xl font-bold font-heading">{totalMetrics.incidents}</h4>
               </div>
-              <div className="bg-slate-200 dark:bg-slate-700 p-2 rounded-full">
-                <FaServer className="h-6 w-6 text-slate-600 dark:text-slate-400" />
+              <div className="bg-primary/10 p-3 rounded-full shadow-sm">
+                <FaServer className="h-6 w-6 text-primary/80" />
               </div>
             </CardContent>
           </Card>
         </div>
-      </FadeIn>
-
-      <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+      </FadeIn>      <div className="mb-8 flex flex-wrap items-center justify-between gap-3 p-4 border border-border/50 bg-card/30 backdrop-blur-sm rounded-lg">
         <div className="flex flex-wrap gap-2">
           <Button
             variant={filter === "all" ? "default" : "outline"}
             size="sm"
             onClick={() => setFilter("all")}
+            className={filter === "all" ? "bg-primary hover:bg-primary/90" : "hover:border-primary/50 hover:text-primary"}
           >
             All Servers
           </Button>
@@ -481,7 +491,9 @@ const LiveDashboard = () => {
             variant={filter === "healthy" ? "default" : "outline"}
             size="sm"
             onClick={() => setFilter("healthy")}
-            className="text-green-600 dark:text-green-400"
+            className={filter === "healthy" 
+              ? "bg-green-500/80 hover:bg-green-500/70 text-white" 
+              : "border-green-200 dark:border-green-800/50 text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-green-900/20"}
           >
             Healthy
           </Button>
@@ -489,7 +501,9 @@ const LiveDashboard = () => {
             variant={filter === "warning" ? "default" : "outline"}
             size="sm"
             onClick={() => setFilter("warning")}
-            className="text-yellow-600 dark:text-yellow-400"
+            className={filter === "warning" 
+              ? "bg-yellow-500/80 hover:bg-yellow-500/70 text-white" 
+              : "border-yellow-200 dark:border-yellow-800/50 text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-yellow-900/20"}
           >
             Warning
           </Button>
@@ -497,7 +511,9 @@ const LiveDashboard = () => {
             variant={filter === "critical" ? "default" : "outline"}
             size="sm"
             onClick={() => setFilter("critical")}
-            className="text-red-600 dark:text-red-400"
+            className={filter === "critical" 
+              ? "bg-red-500/80 hover:bg-red-500/70 text-white" 
+              : "border-red-200 dark:border-red-800/50 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20"}
           >
             Critical
           </Button>
@@ -505,7 +521,9 @@ const LiveDashboard = () => {
             variant={filter === "offline" ? "default" : "outline"}
             size="sm"
             onClick={() => setFilter("offline")}
-            className="text-gray-600 dark:text-gray-400"
+            className={filter === "offline" 
+              ? "bg-slate-500/80 hover:bg-slate-500/70 text-white" 
+              : "border-slate-200 dark:border-slate-700/50 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-900/20"}
           >
             Offline
           </Button>
@@ -513,49 +531,78 @@ const LiveDashboard = () => {
         
         <div className="flex items-center gap-2">
           <Button
-            variant="outline"
+            variant={isSimulating ? "default" : "outline"}
             size="sm"
             onClick={() => setIsSimulating(!isSimulating)}
-            className={`flex items-center gap-2 ${isSimulating ? 'bg-primary/10' : ''}`}
+            className={`flex items-center gap-2 ${
+              isSimulating 
+                ? 'bg-primary hover:bg-primary/90' 
+                : 'border-primary/30 text-primary hover:border-primary hover:bg-primary/5'
+            }`}
           >
             <FaSync className={`h-3 w-3 ${isSimulating ? 'animate-spin' : ''}`} />
             {isSimulating ? "Stop Simulation" : "Start Simulation"}
           </Button>
         </div>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+      </div>      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-8">
         {filteredServers.map(server => (
           <Card 
             key={server.id} 
-            className={`cursor-pointer hover:shadow-md transition-all ${
-              activeServer?.id === server.id ? 'border-primary ring-1 ring-primary' : ''
-            }`}
+            className={`cursor-pointer transition-all duration-300 relative overflow-hidden backdrop-blur-sm
+              ${activeServer?.id === server.id 
+                ? 'border-primary/50 shadow-lg ring-1 ring-primary/30 bg-card' 
+                : 'hover:border-primary/30 hover:shadow-md hover:bg-card/80 bg-card/50'
+              }`}
             onClick={() => handleServerClick(server)}
           >
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between mb-3">
+            {/* Status indicator line on top */}
+            <div 
+              className={`absolute top-0 left-0 h-1 w-full
+                ${server.status === 'healthy' ? 'bg-green-500/70' : 
+                  server.status === 'warning' ? 'bg-yellow-500/70' : 
+                  server.status === 'critical' ? 'bg-red-500/70' : 
+                  'bg-slate-500/70'}`} 
+            />
+            
+            <CardContent className="p-5">
+              <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
-                  <StatusDot status={server.status} />
-                  <h4 className="font-semibold">{server.name}</h4>
+                  <div className={`p-1 rounded-full ${
+                    server.status === 'healthy' ? 'bg-green-100 dark:bg-green-900/50' : 
+                    server.status === 'warning' ? 'bg-yellow-100 dark:bg-yellow-900/50' : 
+                    server.status === 'critical' ? 'bg-red-100 dark:bg-red-900/50' : 
+                    'bg-slate-100 dark:bg-slate-900/50'
+                  }`}>
+                    <StatusDot status={server.status} />
+                  </div>
+                  <h4 className="font-semibold font-heading">{server.name}</h4>
                 </div>
-                <Badge variant={statusBadgeVariant[server.status] as any}>
+                <Badge variant={statusBadgeVariant[server.status] as any} className={`
+                  ${server.status === 'healthy' ? 'bg-green-100/50 dark:bg-green-900/50 text-green-800 dark:text-green-200 border-green-200 dark:border-green-700/50' : 
+                    server.status === 'warning' ? 'bg-yellow-100/50 dark:bg-yellow-900/50 text-yellow-800 dark:text-yellow-200 border-yellow-200 dark:border-yellow-700/50' : 
+                    server.status === 'critical' ? 'bg-red-100/50 dark:bg-red-900/50 text-red-800 dark:text-red-200 border-red-200 dark:border-red-700/50' : 
+                    'bg-slate-100/50 dark:bg-slate-900/50 text-slate-800 dark:text-slate-200 border-slate-200 dark:border-slate-700/50'
+                  }`}>
                   {server.status.charAt(0).toUpperCase() + server.status.slice(1)}
                 </Badge>
               </div>
               
-              <div className="space-y-3">
+              <div className="space-y-4">
                 <div>
-                  <div className="flex justify-between text-xs text-muted-foreground mb-1">
-                    <span>CPU</span>
-                    <span>{Math.round(server.cpu)}%</span>
+                  <div className="flex justify-between text-xs mb-1.5">
+                    <span className="font-medium">CPU</span>
+                    <span className={`font-semibold ${
+                      server.cpu > 80 ? 'text-red-600 dark:text-red-400' :
+                      server.cpu > 60 ? 'text-yellow-600 dark:text-yellow-400' : 
+                      'text-green-600 dark:text-green-400'
+                    }`}>{Math.round(server.cpu)}%</span>
                   </div>
-                  <div className="w-full bg-muted h-2 rounded-full overflow-hidden">
+                  <div className="w-full bg-muted/60 h-2 rounded-full overflow-hidden backdrop-blur-sm">
                     <div 
                       className={`h-full rounded-full transition-all duration-500 ${
-                        server.cpu > 80 ? 'bg-red-500' :
-                        server.cpu > 60 ? 'bg-yellow-500' : 
-                        'bg-green-500'
+                        server.cpu > 80 ? 'bg-gradient-to-r from-red-500 to-red-400' :
+                        server.cpu > 60 ? 'bg-gradient-to-r from-yellow-500 to-yellow-400' : 
+                        'bg-gradient-to-r from-green-500 to-green-400'
                       }`}
                       style={{ width: `${server.cpu}%` }}
                     />
@@ -563,16 +610,20 @@ const LiveDashboard = () => {
                 </div>
                 
                 <div>
-                  <div className="flex justify-between text-xs text-muted-foreground mb-1">
-                    <span>Memory</span>
-                    <span>{Math.round(server.memory)}%</span>
+                  <div className="flex justify-between text-xs mb-1.5">
+                    <span className="font-medium">Memory</span>
+                    <span className={`font-semibold ${
+                      server.memory > 80 ? 'text-red-600 dark:text-red-400' :
+                      server.memory > 60 ? 'text-yellow-600 dark:text-yellow-400' : 
+                      'text-green-600 dark:text-green-400'
+                    }`}>{Math.round(server.memory)}%</span>
                   </div>
-                  <div className="w-full bg-muted h-2 rounded-full overflow-hidden">
+                  <div className="w-full bg-muted/60 h-2 rounded-full overflow-hidden backdrop-blur-sm">
                     <div 
                       className={`h-full rounded-full transition-all duration-500 ${
-                        server.memory > 80 ? 'bg-red-500' :
-                        server.memory > 60 ? 'bg-yellow-500' : 
-                        'bg-green-500'
+                        server.memory > 80 ? 'bg-gradient-to-r from-red-500 to-red-400' :
+                        server.memory > 60 ? 'bg-gradient-to-r from-yellow-500 to-yellow-400' : 
+                        'bg-gradient-to-r from-green-500 to-green-400'
                       }`}
                       style={{ width: `${server.memory}%` }}
                     />
@@ -580,50 +631,60 @@ const LiveDashboard = () => {
                 </div>
                 
                 <div>
-                  <div className="flex justify-between text-xs text-muted-foreground mb-1">
-                    <span>Disk</span>
-                    <span>{Math.round(server.disk)}%</span>
+                  <div className="flex justify-between text-xs mb-1.5">
+                    <span className="font-medium">Disk</span>
+                    <span className={`font-semibold ${
+                      server.disk > 80 ? 'text-red-600 dark:text-red-400' :
+                      server.disk > 60 ? 'text-yellow-600 dark:text-yellow-400' : 
+                      'text-green-600 dark:text-green-400'
+                    }`}>{Math.round(server.disk)}%</span>
                   </div>
-                  <div className="w-full bg-muted h-2 rounded-full overflow-hidden">
+                  <div className="w-full bg-muted/60 h-2 rounded-full overflow-hidden backdrop-blur-sm">
                     <div 
                       className={`h-full rounded-full transition-all duration-500 ${
-                        server.disk > 80 ? 'bg-red-500' :
-                        server.disk > 60 ? 'bg-yellow-500' : 
-                        'bg-green-500'
+                        server.disk > 80 ? 'bg-gradient-to-r from-red-500 to-red-400' :
+                        server.disk > 60 ? 'bg-gradient-to-r from-yellow-500 to-yellow-400' : 
+                        'bg-gradient-to-r from-green-500 to-green-400'
                       }`}
                       style={{ width: `${server.disk}%` }}
                     />
                   </div>
                 </div>
-                
-                <div className="flex items-center justify-between text-sm pt-2 border-t">
-                  <div>
-                    <span className="text-muted-foreground">Type: </span>
-                    <span>{server.type}</span>
+                  <div className="flex items-center justify-between text-xs pt-3 border-t border-border/40">
+                  <div className="flex items-center gap-1">
+                    <span className="text-muted-foreground font-medium">Type:</span>
+                    <span className="font-semibold">{server.type}</span>
                   </div>
-                  <div>
-                    <span className="text-muted-foreground">Response: </span>
-                    <span>{Math.round(server.responseTime)} ms</span>
+                  <div className="flex items-center gap-1">
+                    <span className="text-muted-foreground font-medium">Response:</span>
+                    <span className={`font-semibold ${
+                      server.responseTime > 100 ? 'text-red-600 dark:text-red-400' :
+                      server.responseTime > 60 ? 'text-yellow-600 dark:text-yellow-400' : 
+                      'text-green-600 dark:text-green-400'
+                    }`}>{Math.round(server.responseTime)} ms</span>
                   </div>
                 </div>
                 
                 {server.incidents && server.incidents.filter(i => i.status !== "resolved").length > 0 && (
-                  <div className="pt-2 border-t border-red-200 dark:border-red-800 mt-2">
-                    <p className="text-red-500 dark:text-red-400 text-sm font-medium mb-1">Active Incidents:</p>
-                    <ul className="space-y-1">
+                  <div className="pt-3 border-t border-red-200/50 dark:border-red-800/50 mt-3 bg-red-50/50 dark:bg-red-900/20 -mx-5 -mb-5 px-5 pb-4 rounded-b-lg">
+                    <p className="text-red-600 dark:text-red-400 text-sm font-medium mb-2 flex items-center gap-1.5">
+                      <FaExclamationTriangle className="h-3.5 w-3.5" />
+                      <span>Active Incidents</span>
+                    </p>
+                    <ul className="space-y-1.5">
                       {server.incidents
                         .filter(incident => incident.status !== "resolved")
                         .map(incident => (
                           <li 
                             key={incident.id} 
-                            className="flex items-center gap-2 text-sm cursor-pointer hover:bg-muted/50 p-1 rounded"
+                            className="flex items-center gap-2 text-sm cursor-pointer hover:bg-red-100/50 dark:hover:bg-red-900/30 p-1.5 px-2 rounded-md transition-colors"
                             onClick={(e) => {
                               e.stopPropagation();
                               handleIncidentClick(incident);
                             }}
                           >
                             <span className={`inline-block w-2 h-2 rounded-full ${severityColors[incident.severity]}`} />
-                            <span className="truncate">{incident.title}</span>
+                            <span className="truncate font-medium text-red-800 dark:text-red-300">{incident.title}</span>
                           </li>
                         ))}
                     </ul>
@@ -633,97 +694,143 @@ const LiveDashboard = () => {
             </CardContent>
           </Card>
         ))}
-      </div>
-
-      <div className="border rounded-lg p-4 mb-6">
-        <h4 className="font-medium mb-4">Simulate Infrastructure Incidents</h4>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
+      </div>      <div className="border border-border/50 backdrop-blur-sm bg-card/30 rounded-xl p-5 mb-8">
+        <h4 className="font-medium font-heading text-lg mb-4 flex items-center gap-2">
+          <span className="inline-block p-1.5 rounded-full bg-primary/10">
+            <FaServer className="h-4 w-4 text-primary" />
+          </span>
+          Simulate Infrastructure Incidents
+        </h4>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
           <Button 
             variant="outline"
             onClick={() => triggeFlagituation('resourceExhaustion')}
-            className="border-yellow-200 dark:border-yellow-800 text-yellow-800 dark:text-yellow-300"
+            className="border-yellow-200/70 dark:border-yellow-800/50 bg-yellow-50/50 dark:bg-yellow-900/20 text-yellow-800 dark:text-yellow-300 hover:bg-yellow-100/70 dark:hover:bg-yellow-800/30"
           >
             Resource Exhaustion
           </Button>
           <Button 
             variant="outline"
             onClick={() => triggeFlagituation('databaseOverload')}
-            className="border-red-200 dark:border-red-800 text-red-800 dark:text-red-300"
+            className="border-red-200/70 dark:border-red-800/50 bg-red-50/50 dark:bg-red-900/20 text-red-800 dark:text-red-300 hover:bg-red-100/70 dark:hover:bg-red-800/30"
           >
             Database Overload 
           </Button>
           <Button 
             variant="outline"
             onClick={() => triggeFlagituation('networkLatency')}
-            className="border-blue-200 dark:border-blue-800 text-blue-800 dark:text-blue-300"
+            className="border-blue-200/70 dark:border-blue-800/50 bg-blue-50/50 dark:bg-blue-900/20 text-blue-800 dark:text-blue-300 hover:bg-blue-100/70 dark:hover:bg-blue-800/30"
           >
             Network Latency
           </Button>
           <Button 
             variant="outline"
             onClick={() => triggeFlagituation('diskFailure')}
-            className="border-purple-200 dark:border-purple-800 text-purple-800 dark:text-purple-300"
+            className="border-purple-200/70 dark:border-purple-800/50 bg-purple-50/50 dark:bg-purple-900/20 text-purple-800 dark:text-purple-300 hover:bg-purple-100/70 dark:hover:bg-purple-800/30"
           >
             Disk Failure
           </Button>
         </div>
-        <div className="mt-3 flex justify-end">
+        <div className="mt-4 flex justify-end">
           <Button 
             variant="outline"
             onClick={resolveAllIncidents}
-            className="border-green-200 dark:border-green-800 text-green-800 dark:text-green-300"
+            className="border-green-200/70 dark:border-green-800/50 bg-green-50/50 dark:bg-green-900/20 text-green-800 dark:text-green-300 hover:bg-green-100/70 dark:hover:bg-green-800/30 flex items-center gap-1.5"
           >
-            Resolve All Issues
+            <FaCheckCircle className="h-3.5 w-3.5" /> Resolve All Issues
           </Button>
         </div>
-      </div>
-
-      {activeServer && (
+      </div>      {activeServer && (
         <FadeIn direction="up">
-          <Card className="mb-6">
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-2">
-                  <StatusDot status={activeServer.status} />
-                  <h3 className="text-xl font-bold">{activeServer.name}</h3>
+          <Card className="mb-8 border-primary/20 relative overflow-hidden">
+            {/* Status indicator line on top */}
+            <div 
+              className={`absolute top-0 left-0 h-1.5 w-full
+                ${activeServer.status === 'healthy' ? 'bg-green-500/70' : 
+                  activeServer.status === 'warning' ? 'bg-yellow-500/70' : 
+                  activeServer.status === 'critical' ? 'bg-red-500/70' : 
+                  'bg-slate-500/70'}`} 
+            />
+            
+            {/* Background gradient */}
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent pointer-events-none"></div>
+            
+            <CardContent className="p-5">
+              <div className="flex items-center justify-between mb-5">
+                <div className="flex items-center gap-3">
+                  <div className={`p-1.5 rounded-full ${
+                    activeServer.status === 'healthy' ? 'bg-green-100 dark:bg-green-900/50' : 
+                    activeServer.status === 'warning' ? 'bg-yellow-100 dark:bg-yellow-900/50' : 
+                    activeServer.status === 'critical' ? 'bg-red-100 dark:bg-red-900/50' : 
+                    'bg-slate-100 dark:bg-slate-900/50'
+                  }`}>
+                    <StatusDot status={activeServer.status} />
+                  </div>
+                  <h3 className="text-2xl font-bold font-heading">{activeServer.name}</h3>
                 </div>
-                <Badge variant={statusBadgeVariant[activeServer.status] as any}>
+                <Badge 
+                  variant={statusBadgeVariant[activeServer.status] as any}
+                  className={`px-3 py-1 text-sm font-medium
+                    ${activeServer.status === 'healthy' ? 'bg-green-100/50 dark:bg-green-900/50 text-green-800 dark:text-green-200 border-green-200 dark:border-green-700/50' : 
+                      activeServer.status === 'warning' ? 'bg-yellow-100/50 dark:bg-yellow-900/50 text-yellow-800 dark:text-yellow-200 border-yellow-200 dark:border-yellow-700/50' : 
+                      activeServer.status === 'critical' ? 'bg-red-100/50 dark:bg-red-900/50 text-red-800 dark:text-red-200 border-red-200 dark:border-red-700/50' : 
+                      'bg-slate-100/50 dark:bg-slate-900/50 text-slate-800 dark:text-slate-200 border-slate-200 dark:border-slate-700/50'
+                    }`}>
                   {activeServer.status.charAt(0).toUpperCase() + activeServer.status.slice(1)}
                 </Badge>
               </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div>
-                  <h4 className="font-semibold mb-3 border-b pb-1">System Metrics</h4>
-                  <div className="space-y-4">
+                  <h4 className="font-semibold text-lg font-heading mb-4 pb-1 border-b border-border/40 flex items-center gap-2">
+                    <span className="text-primary/70">System Metrics</span>
+                  </h4>
+                  
+                  <div className="space-y-5">
                     <div>
-                      <div className="flex justify-between text-sm text-muted-foreground mb-1">
-                        <span>CPU Usage</span>
-                        <span>{Math.round(activeServer.cpu)}%</span>
+                      <div className="flex justify-between text-sm mb-2">
+                        <span className="font-medium">CPU Usage</span>
+                        <span className={`font-semibold ${
+                          activeServer.cpu > 80 ? 'text-red-600 dark:text-red-400' :
+                          activeServer.cpu > 60 ? 'text-yellow-600 dark:text-yellow-400' : 
+                          'text-green-600 dark:text-green-400'
+                        }`}>{Math.round(activeServer.cpu)}%</span>
                       </div>
-                      <div className="w-full bg-muted h-3 rounded-full overflow-hidden">
+                      <div className="w-full bg-muted/60 h-3 rounded-full overflow-hidden backdrop-blur-sm">
                         <div 
                           className={`h-full rounded-full transition-all duration-500 ${
-                            activeServer.cpu > 80 ? 'bg-red-500' :
-                            activeServer.cpu > 60 ? 'bg-yellow-500' : 
-                            'bg-green-500'
+                            activeServer.cpu > 80 ? 'bg-gradient-to-r from-red-500 to-red-400' :
+                            activeServer.cpu > 60 ? 'bg-gradient-to-r from-yellow-500 to-yellow-400' : 
+                            'bg-gradient-to-r from-green-500 to-green-400'
                           }`}
                           style={{ width: `${activeServer.cpu}%` }}
                         />
                       </div>
+                      
+                      {/* CPU Usage Scale */}
+                      <div className="flex justify-between text-xs text-muted-foreground mt-1">
+                        <span>0%</span>
+                        <span>25%</span>
+                        <span>50%</span>
+                        <span>75%</span>
+                        <span>100%</span>
+                      </div>
                     </div>
                     
                     <div>
-                      <div className="flex justify-between text-sm text-muted-foreground mb-1">
-                        <span>Memory Usage</span>
-                        <span>{Math.round(activeServer.memory)}%</span>
+                      <div className="flex justify-between text-sm mb-2">
+                        <span className="font-medium">Memory Usage</span>
+                        <span className={`font-semibold ${
+                          activeServer.memory > 80 ? 'text-red-600 dark:text-red-400' :
+                          activeServer.memory > 60 ? 'text-yellow-600 dark:text-yellow-400' : 
+                          'text-green-600 dark:text-green-400'
+                        }`}>{Math.round(activeServer.memory)}%</span>
                       </div>
-                      <div className="w-full bg-muted h-3 rounded-full overflow-hidden">
+                      <div className="w-full bg-muted/60 h-3 rounded-full overflow-hidden backdrop-blur-sm">
                         <div 
                           className={`h-full rounded-full transition-all duration-500 ${
-                            activeServer.memory > 80 ? 'bg-red-500' :
-                            activeServer.memory > 60 ? 'bg-yellow-500' : 
-                            'bg-green-500'
+                            activeServer.memory > 80 ? 'bg-gradient-to-r from-red-500 to-red-400' :
+                            activeServer.memory > 60 ? 'bg-gradient-to-r from-yellow-500 to-yellow-400' : 
+                            'bg-gradient-to-r from-green-500 to-green-400'
                           }`}
                           style={{ width: `${activeServer.memory}%` }}
                         />
@@ -731,16 +838,20 @@ const LiveDashboard = () => {
                     </div>
                     
                     <div>
-                      <div className="flex justify-between text-sm text-muted-foreground mb-1">
-                        <span>Disk Usage</span>
-                        <span>{Math.round(activeServer.disk)}%</span>
+                      <div className="flex justify-between text-sm mb-2">
+                        <span className="font-medium">Disk Usage</span>
+                        <span className={`font-semibold ${
+                          activeServer.disk > 80 ? 'text-red-600 dark:text-red-400' :
+                          activeServer.disk > 60 ? 'text-yellow-600 dark:text-yellow-400' : 
+                          'text-green-600 dark:text-green-400'
+                        }`}>{Math.round(activeServer.disk)}%</span>
                       </div>
-                      <div className="w-full bg-muted h-3 rounded-full overflow-hidden">
+                      <div className="w-full bg-muted/60 h-3 rounded-full overflow-hidden backdrop-blur-sm">
                         <div 
                           className={`h-full rounded-full transition-all duration-500 ${
-                            activeServer.disk > 80 ? 'bg-red-500' :
-                            activeServer.disk > 60 ? 'bg-yellow-500' : 
-                            'bg-green-500'
+                            activeServer.disk > 80 ? 'bg-gradient-to-r from-red-500 to-red-400' :
+                            activeServer.disk > 60 ? 'bg-gradient-to-r from-yellow-500 to-yellow-400' : 
+                            'bg-gradient-to-r from-green-500 to-green-400'
                           }`}
                           style={{ width: `${activeServer.disk}%` }}
                         />
@@ -748,16 +859,20 @@ const LiveDashboard = () => {
                     </div>
                     
                     <div>
-                      <div className="flex justify-between text-sm text-muted-foreground mb-1">
-                        <span>Network Utilization</span>
-                        <span>{Math.round(activeServer.network)}%</span>
+                      <div className="flex justify-between text-sm mb-2">
+                        <span className="font-medium">Network Utilization</span>
+                        <span className={`font-semibold ${
+                          activeServer.network > 80 ? 'text-red-600 dark:text-red-400' :
+                          activeServer.network > 60 ? 'text-yellow-600 dark:text-yellow-400' : 
+                          'text-green-600 dark:text-green-400'
+                        }`}>{Math.round(activeServer.network)}%</span>
                       </div>
-                      <div className="w-full bg-muted h-3 rounded-full overflow-hidden">
+                      <div className="w-full bg-muted/60 h-3 rounded-full overflow-hidden backdrop-blur-sm">
                         <div 
                           className={`h-full rounded-full transition-all duration-500 ${
-                            activeServer.network > 80 ? 'bg-red-500' :
-                            activeServer.network > 60 ? 'bg-yellow-500' : 
-                            'bg-green-500'
+                            activeServer.network > 80 ? 'bg-gradient-to-r from-red-500 to-red-400' :
+                            activeServer.network > 60 ? 'bg-gradient-to-r from-yellow-500 to-yellow-400' : 
+                            'bg-gradient-to-r from-green-500 to-green-400'
                           }`}
                           style={{ width: `${activeServer.network}%` }}
                         />
@@ -765,39 +880,51 @@ const LiveDashboard = () => {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4 mt-4">
-                    <div className="border rounded p-2">
-                      <p className="text-sm text-muted-foreground">Response Time</p>
-                      <p className="text-lg font-semibold">{Math.round(activeServer.responseTime)} ms</p>
+                  <div className="grid grid-cols-2 gap-4 mt-6">
+                    <div className="border border-border/50 rounded-lg p-3 bg-card/50">
+                      <p className="text-xs uppercase tracking-wider text-muted-foreground font-medium">Response Time</p>
+                      <p className={`text-xl font-semibold mt-1 ${
+                        activeServer.responseTime > 100 ? 'text-red-600 dark:text-red-400' :
+                        activeServer.responseTime > 60 ? 'text-yellow-600 dark:text-yellow-400' : 
+                        'text-green-600 dark:text-green-400'
+                      }`}>{Math.round(activeServer.responseTime)} ms</p>
                     </div>
-                    <div className="border rounded p-2">
-                      <p className="text-sm text-muted-foreground">Uptime</p>
-                      <p className="text-lg font-semibold">{activeServer.uptime}</p>
+                    <div className="border border-border/50 rounded-lg p-3 bg-card/50">
+                      <p className="text-xs uppercase tracking-wider text-muted-foreground font-medium">Uptime</p>
+                      <p className="text-xl font-semibold mt-1">{activeServer.uptime}</p>
                     </div>
                   </div>
-                </div>
-
-                <div>
-                  <h4 className="font-semibold mb-3 border-b pb-1">Incident History</h4>
+                </div>                <div>
+                  <h4 className="font-semibold text-lg font-heading mb-4 pb-1 border-b border-border/40 flex items-center gap-2">
+                    <span className="text-primary/70">Incident History</span>
+                  </h4>
+                  
                   {activeServer.incidents && activeServer.incidents.length > 0 ? (
-                    <div className="space-y-3">
+                    <div className="space-y-4">
                       {activeServer.incidents.map(incident => (
                         <div 
                           key={incident.id}
-                          className={`border rounded p-3 cursor-pointer hover:bg-muted/50 transition-colors ${
-                            incident.status === "active" ? "border-red-300 dark:border-red-800" :
-                            incident.status === "investigating" ? "border-yellow-300 dark:border-yellow-800" :
-                            "border-green-300 dark:border-green-800"
+                          className={`border rounded-lg p-4 cursor-pointer transition-all duration-200 hover:shadow-md ${
+                            incident.status === "active" ? "border-red-300/70 dark:border-red-800/70 bg-red-50/50 dark:bg-red-900/20" :
+                            incident.status === "investigating" ? "border-yellow-300/70 dark:border-yellow-800/70 bg-yellow-50/50 dark:bg-yellow-900/20" :
+                            "border-green-300/70 dark:border-green-800/70 bg-green-50/50 dark:bg-green-900/20"
                           }`}
                           onClick={() => handleIncidentClick(incident)}
                         >
-                          <div className="flex items-center justify-between mb-1">
-                            <h5 className="font-medium">{incident.title}</h5>
+                          <div className="flex items-center justify-between mb-2">
+                            <div className="flex items-center gap-2">
+                              <span className={`inline-block w-2.5 h-2.5 rounded-full ${severityColors[incident.severity]}`} />
+                              <h5 className="font-medium font-heading">{incident.title}</h5>
+                            </div>
                             <Badge variant={
                               incident.status === "active" ? "destructive" :
                               incident.status === "investigating" ? "outline" :
                               "default"
-                            }>
+                            } className={`${
+                              incident.status === "active" ? "bg-red-100/70 dark:bg-red-900/50 text-red-800 dark:text-red-200 border-red-300 dark:border-red-700" :
+                              incident.status === "investigating" ? "bg-yellow-100/70 dark:bg-yellow-900/50 text-yellow-800 dark:text-yellow-200 border-yellow-300 dark:border-yellow-700" :
+                              "bg-green-100/70 dark:bg-green-900/50 text-green-800 dark:text-green-200 border-green-300 dark:border-green-700"
+                            }`}>
                               {incident.status.charAt(0).toUpperCase() + incident.status.slice(1)}
                             </Badge>
                           </div>
@@ -806,9 +933,11 @@ const LiveDashboard = () => {
                               ? `${incident.description.substring(0, 100)}...` 
                               : incident.description}
                           </p>
-                          <div className="flex items-center justify-between mt-2 text-xs text-muted-foreground">
-                            <span>Severity: {incident.severity.toUpperCase()}</span>
-                            <span>
+                          <div className="flex items-center justify-between mt-3 pt-2 border-t border-border/30 text-xs">
+                            <span className="font-medium px-2 py-1 rounded-md bg-primary/10 text-primary">
+                              Severity: {incident.severity.toUpperCase()}
+                            </span>
+                            <span className="text-muted-foreground">
                               {new Date(incident.timestamp).toLocaleString()}
                             </span>
                           </div>
@@ -816,8 +945,10 @@ const LiveDashboard = () => {
                       ))}
                     </div>
                   ) : (
-                    <div className="h-full flex items-center justify-center border rounded p-4">
+                    <div className="h-full flex flex-col items-center justify-center border border-border/30 rounded-lg p-8 bg-card/50">
+                      <FaCheckCircle className="h-6 w-6 text-green-500 mb-2" />
                       <p className="text-muted-foreground">No incidents reported</p>
+                      <p className="text-xs text-muted-foreground mt-1">Server is operating normally</p>
                     </div>
                   )}
                 </div>

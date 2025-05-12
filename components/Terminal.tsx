@@ -592,78 +592,85 @@ Type 'help <command>' for more information on a specific command`;
       terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
     }
   }, [history]);
-
   if (isMinimized) {
     return (
       <section id="terminal-demo" className="scroll-mt-16">
-        <div className="sticky top-0 z-20 -mx-6 mb-4 w-screen bg-background/0 px-6 py-5 backdrop-blur md:-mx-12 md:px-12 lg:sr-only lg:relative lg:top-auto lg:mx-auto lg:w-full lg:px-0 lg:py-0 lg:opacity-0">
-          <h2 className="text-sm font-bold uppercase tracking-widest lg:sr-only">
+        <div className="sticky top-0 z-20 -mx-6 mb-8 w-screen bg-background/80 px-6 py-5 backdrop-blur md:-mx-12 md:px-12 lg:sr-only lg:relative lg:top-auto lg:mx-auto lg:w-full lg:px-0 lg:py-0 lg:opacity-0">
+          <h2 className="text-sm font-bold uppercase tracking-widest text-primary lg:sr-only">
             Terminal Demo
           </h2>
         </div>
         <FadeIn direction="up" delay={100}>
           <div className="mb-6">
-            <h3 className="text-xl font-bold mb-3">Interactive Terminal Demo</h3>
+            <h3 className="text-2xl font-bold mb-3 font-heading">Interactive Terminal</h3>
             <p className="text-muted-foreground">
               Experience a simulated Linux environment where you can execute common system administration commands.
             </p>
           </div>
           <Button 
             onClick={toggleMinimize} 
-            className="flex items-center gap-2"
-            variant="outline"
+            className="flex items-center gap-2 relative overflow-hidden group"
+            variant="default"
           >
-            <FaTerminal /> Launch Terminal
+            <span className="absolute inset-0 w-full h-full bg-gradient-to-br from-primary/50 to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+            <FaTerminal className="relative z-10" /> 
+            <span className="relative z-10">Launch Terminal</span>
           </Button>
         </FadeIn>
       </section>
     );
   }
-
   return (
     <section id="terminal-demo" className="scroll-mt-16">
-      <div className="sticky top-0 z-20 -mx-6 mb-4 w-screen bg-background/0 px-6 py-5 backdrop-blur md:-mx-12 md:px-12 lg:sr-only lg:relative lg:top-auto lg:mx-auto lg:w-full lg:px-0 lg:py-0 lg:opacity-0">
-        <h2 className="text-sm font-bold uppercase tracking-widest lg:sr-only">
+      <div className="sticky top-0 z-20 -mx-6 mb-8 w-screen bg-background/80 px-6 py-5 backdrop-blur md:-mx-12 md:px-12 lg:sr-only lg:relative lg:top-auto lg:mx-auto lg:w-full lg:px-0 lg:py-0 lg:opacity-0">
+        <h2 className="text-sm font-bold uppercase tracking-widest text-primary lg:sr-only">
           Terminal Demo
         </h2>
       </div>
       
       <FadeIn direction="up" delay={100}>
         <div className={`${isFullscreen ? 'fixed inset-0 z-50 p-4 bg-background/90 backdrop-blur-sm' : ''}`}>
-          <Card className={`border-2 overflow-hidden ${isFullscreen ? 'h-full' : 'h-[500px]'}`}>
-            <div className="bg-gray-900 text-white p-2 flex justify-between items-center border-b border-gray-700">
+          <Card className={`relative border overflow-hidden rounded-xl drop-shadow-lg ${isFullscreen ? 'h-full' : 'h-[480px]'}`}>
+            {/* Glowing effect */}
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-primary/10 pointer-events-none"></div>
+            
+            <div className="bg-black text-white p-2 flex justify-between items-center border-b border-gray-800 backdrop-blur-md bg-opacity-80 relative z-10">
               <div className="flex items-center gap-2">
-                <span className="font-mono text-sm">anup@anup-server:~</span>
+                <div className="flex gap-1.5 pl-1">
+                  <div className="w-3 h-3 rounded-full bg-red-500"></div>
+                  <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
+                  <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                </div>
+                <span className="font-mono text-sm ml-2 text-gray-300">anup@anup-server:~</span>
               </div>
               <div className="flex items-center gap-2">
-                <Button variant="ghost" size="icon" onClick={toggleMinimize} className="h-6 w-6 text-gray-300 hover:text-white">
+                <Button variant="ghost" size="icon" onClick={toggleMinimize} className="h-6 w-6 text-gray-400 hover:text-white hover:bg-gray-700/50">
                   <FaMinus className="h-3 w-3" />
                 </Button>
-                <Button variant="ghost" size="icon" onClick={toggleFullscreen} className="h-6 w-6 text-gray-300 hover:text-white">
+                <Button variant="ghost" size="icon" onClick={toggleFullscreen} className="h-6 w-6 text-gray-400 hover:text-white hover:bg-gray-700/50">
                   <FaExpand className="h-3 w-3" />
                 </Button>
-                <Button variant="ghost" size="icon" onClick={() => runCommand("clear")} className="h-6 w-6 text-gray-300 hover:text-white">
+                <Button variant="ghost" size="icon" onClick={() => runCommand("clear")} className="h-6 w-6 text-gray-400 hover:text-white hover:bg-gray-700/50">
                   <FaTimes className="h-3 w-3" />
                 </Button>
               </div>
             </div>
-            
-            <CardContent className="p-0 h-full bg-gray-900 text-white">
+              <CardContent className="p-0 h-full bg-gray-950 bg-opacity-95 text-white">
               <div 
                 ref={terminalRef} 
-                className="font-mono text-sm p-4 h-full overflow-auto" 
+                className="font-mono text-sm p-4 h-full overflow-auto scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent" 
                 onClick={handleTerminalClick}
               >
                 {history.map((item, idx) => (
-                  <div key={idx} className="mb-2">
+                  <div key={idx} className="mb-2 group">
                     {item.command && (
                       <div className="flex items-center gap-2">
-                        <span className="text-green-400">anup@anup-server:~$</span>
+                        <span className="text-green-500">anup@anup-server:~$</span>
                         <span className="flex-1">{item.command}</span>
                         <Button
                           variant="ghost"
                           size="icon"
-                          className="h-5 w-5 opacity-0 hover:opacity-100 hover:bg-transparent text-gray-400"
+                          className="h-5 w-5 opacity-0 group-hover:opacity-100 hover:bg-gray-800/50 text-gray-400"
                           onClick={() => copyToClipboard(item.command)}
                         >
                           <FaCopy className="h-3 w-3" />
@@ -672,28 +679,30 @@ Type 'help <command>' for more information on a specific command`;
                     )}
                     {item.output && (
                       <div 
-                        className={`mt-1 whitespace-pre-wrap ${item.isError ? 'text-red-400' : 'text-gray-300'}`}
+                        className={`mt-1 whitespace-pre-wrap ${item.isError ? 'text-red-400' : 'text-emerald-50/90'}`}
                         dangerouslySetInnerHTML={{ __html: item.output }}
                       ></div>
                     )}
                   </div>
                 ))}
                 <div className="flex items-center gap-2">
-                  <span className="text-green-400">anup@anup-server:~$</span>
+                  <span className="text-green-500">anup@anup-server:~$</span>
                   <input
                     ref={inputRef}
                     type="text"
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     onKeyDown={handleKeyDown}
-                    className="bg-transparent border-none outline-none flex-1 text-white"
+                    className="bg-transparent border-none outline-none flex-1 text-white caret-green-500"
                     disabled={isLoading}
+                    spellCheck="false"
+                    autoCapitalize="none"
+                    autoComplete="off"
                   />
-                  {isLoading && <span className="animate-pulse">■</span>}
+                  {isLoading && <span className="animate-pulse text-green-500">■</span>}
                 </div>
               </div>
-            </CardContent>
-          </Card>
+            </CardContent>          </Card>
           
           {isFullscreen && (
             <div className="absolute bottom-4 right-4">
@@ -705,8 +714,13 @@ Type 'help <command>' for more information on a specific command`;
         </div>
         
         {!isFullscreen && (
-          <div className="mt-4 text-muted-foreground text-sm">
-            <p>Try commands like: <code>ls</code>, <code>cat /home/anup/notes.txt</code>, <code>docker ps</code>, <code>sysinfo</code>, or <code>help</code></p>
+          <div className="mt-4 p-3 rounded-lg bg-black/5 border border-border/40 text-muted-foreground text-sm">
+            <div className="flex flex-wrap gap-2 items-center">
+              <span className="text-xs font-medium">Try commands:</span>
+              {['ls', 'cat /home/anup/notes.txt', 'docker ps', 'sysinfo', 'help'].map((cmd) => (
+                <code key={cmd} className="px-2 py-1 bg-primary/10 rounded text-xs font-mono text-primary">{cmd}</code>
+              ))}
+            </div>
           </div>
         )}
       </FadeIn>

@@ -371,34 +371,40 @@ const CloudArchitecture = () => {
       setEdges(newEdges);
     }, 1000);
   };
-
   return (
     <section id="architecture-diagram" className="scroll-mt-16">
-      <div className="sticky top-0 z-20 -mx-6 mb-4 w-screen bg-background/0 px-6 py-5 backdrop-blur md:-mx-12 md:px-12 lg:sr-only lg:relative lg:top-auto lg:mx-auto lg:w-full lg:px-0 lg:py-0 lg:opacity-0">
-        <h2 className="text-sm font-bold uppercase tracking-widest lg:sr-only">
+      <div className="sticky top-0 z-20 -mx-6 mb-8 w-screen bg-background/80 px-6 py-5 backdrop-blur md:-mx-12 md:px-12 lg:sr-only lg:relative lg:top-auto lg:mx-auto lg:w-full lg:px-0 lg:py-0 lg:opacity-0">
+        <h2 className="text-sm font-bold uppercase tracking-widest text-primary lg:sr-only">
           Cloud Architecture
         </h2>
       </div>
 
       <FadeIn direction="up" delay={100}>
-        <div className="mb-6">
-          <h3 className="text-xl font-bold mb-3">Interactive Cloud Architecture Diagram</h3>
-          <p className="text-muted-foreground">
-            Explore different cloud architecture patterns through this interactive diagram. 
-            Click on components to see relationships and simulate data flows across the infrastructure.
-          </p>
+        <div className="mb-8 relative">
+          {/* Decorative element */}
+          <div className="absolute left-0 top-0 h-12 w-1 bg-gradient-to-b from-primary/80 to-primary/0 rounded-full hidden lg:block"></div>
+          
+          <div className="lg:pl-8">
+            <h3 className="text-2xl font-bold mb-3 font-heading">Interactive Cloud Architecture Diagram</h3>
+            <p className="text-muted-foreground">
+              Explore different cloud architecture patterns through this interactive diagram. 
+              Click on components to see relationships and simulate data flows across the infrastructure.
+            </p>
+          </div>
         </div>
-      </FadeIn>
-
-      <Card className="mb-6 p-4">
-        <div className="flex flex-wrap gap-2 mb-4">
+      </FadeIn>      <Card className="mb-6 p-5 border border-border/80 bg-card/50 backdrop-blur-sm shadow-sm">
+        <div className="flex flex-wrap gap-3 mb-5">
           {Object.keys(architecturePresets).map(key => (
             <Button
               key={key}
               variant={selectedArchitecture === key ? "default" : "outline"}
               size="sm"
               onClick={() => changeArchitecture(key)}
-              className="text-sm"
+              className={`text-sm transition-all ${
+                selectedArchitecture === key 
+                  ? 'shadow-sm font-medium' 
+                  : 'hover:bg-primary/10'
+              }`}
             >
               {architecturePresets[key as keyof typeof architecturePresets].name}
             </Button>
@@ -608,12 +614,13 @@ const CloudArchitecture = () => {
           </div>
         )}
       </Card>
-      
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-        <Card className="p-4">
-          <div className="flex items-center gap-2 mb-2">
-            <FaServer className="text-blue-500 dark:text-blue-400" />
-            <h4 className="font-semibold">Modern Infrastructure</h4>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
+        <Card className="p-5 bg-gradient-to-br from-blue-50/50 to-transparent dark:from-blue-950/30 dark:to-transparent border-blue-100 dark:border-blue-900/30 hover:shadow-md transition-all duration-300">
+          <div className="flex items-center gap-2 mb-3">
+            <div className="p-2 rounded-full bg-blue-100 dark:bg-blue-900/50">
+              <FaServer className="text-blue-600 dark:text-blue-400 h-4 w-4" />
+            </div>
+            <h4 className="font-semibold font-heading">Modern Infrastructure</h4>
           </div>
           <p className="text-sm text-muted-foreground">
             Explore how modern applications leverage multi-tier architectures with load balancing,
@@ -621,20 +628,25 @@ const CloudArchitecture = () => {
           </p>
         </Card>
         
-        <Card className="p-4">
-          <div className="flex items-center gap-2 mb-2">
-            <FaCloudUploadAlt className="text-purple-500 dark:text-purple-400" />
-            <h4 className="font-semibold">Cloud Native Design</h4>
+        <Card className="p-5 bg-gradient-to-br from-purple-50/50 to-transparent dark:from-purple-950/30 dark:to-transparent border-purple-100 dark:border-purple-900/30 hover:shadow-md transition-all duration-300">
+          <div className="flex items-center gap-2 mb-3">
+            <div className="p-2 rounded-full bg-purple-100 dark:bg-purple-900/50">
+              <FaCloudUploadAlt className="text-purple-600 dark:text-purple-400 h-4 w-4" />
+            </div>
+            <h4 className="font-semibold font-heading">Cloud Native Design</h4>
           </div>
           <p className="text-sm text-muted-foreground">
             See how cloud-native applications are designed with scalability, resilience and 
             distributed architecture patterns to maximize resource efficiency.
           </p>
         </Card>
-          <Card className="p-4">
-          <div className="flex items-center gap-2 mb-2">
-            <FaShieldAlt className="text-green-500 dark:text-green-400" />
-            <h4 className="font-semibold">Security by Design</h4>
+        
+        <Card className="p-5 bg-gradient-to-br from-green-50/50 to-transparent dark:from-green-950/30 dark:to-transparent border-green-100 dark:border-green-900/30 hover:shadow-md transition-all duration-300">
+          <div className="flex items-center gap-2 mb-3">
+            <div className="p-2 rounded-full bg-green-100 dark:bg-green-900/50">
+              <FaShieldAlt className="text-green-600 dark:text-green-400 h-4 w-4" />
+            </div>
+            <h4 className="font-semibold font-heading">Security by Design</h4>
           </div>
           <p className="text-sm text-muted-foreground">
             Visualize security layers including WAFs, VPNs, and network segmentation that 
@@ -642,8 +654,7 @@ const CloudArchitecture = () => {
           </p>
         </Card>
       </div>
-      
-      <div className="text-sm text-muted-foreground">
+        <div className="text-sm text-muted-foreground p-4 border border-border/40 rounded-lg bg-card/30">
         <p>This interactive diagram showcases various cloud architecture patterns commonly used in enterprise environments. 
         Click on individual components to see details and relationships, or use the simulation feature to visualize data flows.</p>
       </div>
