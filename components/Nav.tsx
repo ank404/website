@@ -10,17 +10,26 @@ type NavItem = {
   href: string;
 };
 
-export default function Nav() {
-  const activeSection = useActiveSection([
+export default function Nav() {  const activeSection = useActiveSection([
     "about",
     "experience",
     "projects",
+    "skills",
+    "certifications",
+    "testimonials",
+    "resume",
+    "contact",
   ]);
 
   const navItems: NavItem[] = [
     { name: "About", href: "#about" },
     { name: "Experience / Education", href: "#experience" },
     { name: "Projects", href: "#projects" },
+    { name: "Skills", href: "#skills" },
+    { name: "Certifications", href: "#certifications" },
+    { name: "Testimonials", href: "#testimonials" },
+    { name: "Resume", href: "#resume" },
+    { name: "Contact", href: "#contact" },
   ];
 
   const getNavItemClasses = (href: string) => {
