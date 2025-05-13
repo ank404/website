@@ -495,34 +495,27 @@ Type 'help <command>' for more information on a specific command`;
       }
         setInput("");
       setIsLoading(false);
-      setPosition(history.length + 1);      // Scroll to bottom and ensure focus is maintained
+      setPosition(history.length + 1);      // Scroll to bottom and ensure focus is maintained, but don't be too aggressive
       if (terminalRef.current) {
-        // Use multiple nested timeouts with increasing delays to ensure focus is maintained
-        // This helps overcome any other events that might steal focus
         setTimeout(() => {
           if (terminalRef.current) {
             terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
           }
           
-          // First focus attempt - immediate
-          if (inputRef.current) {
+          // Only focus if the user hasn't explicitly focused elsewhere
+          // Check if focus is outside the terminal completely
+          const activeElement = document.activeElement;
+          const terminalContainer = terminalRef.current?.closest('section');
+          
+          if (inputRef.current && 
+              (!activeElement || 
+               (activeElement.tagName !== 'BUTTON' && 
+                activeElement.tagName !== 'A' &&
+                activeElement.tagName !== 'INPUT' && 
+                (!terminalContainer || !terminalContainer.contains(activeElement))))) {
             inputRef.current.focus();
           }
-          
-          // Second focus attempt - short delay
-          setTimeout(() => {
-            if (inputRef.current && document.activeElement !== inputRef.current) {
-              inputRef.current.focus();
-            }
-          }, 50);
-          
-          // Third focus attempt - longer delay for reliability
-          setTimeout(() => {
-            if (inputRef.current && document.activeElement !== inputRef.current) {
-              inputRef.current.focus();
-            }
-          }, 150);
-        }, 0);
+        }, 10);
       }
     }, 100);
   };
@@ -575,14 +568,27 @@ Type 'help <command>' for more information on a specific command`;
 
   const toggleMinimize = () => {
     setIsMinimized(!isMinimized);
-  };  // Focus the input when clicking anywhere in the terminal
+  };  // Focus the input when clicking specifically on the terminal content area, not buttons
   const handleTerminalClick = (e: React.MouseEvent) => {
-    // Prevent event propagation to stop parent elements from handling the event
+    const target = e.target as HTMLElement;
+    
+    // If clicking on a button, input, or interactive element, let it handle its own click
+    if (target.tagName === 'BUTTON' || 
+        target.closest('button') || 
+        target.tagName === 'INPUT' ||
+        target.hasAttribute('role') ||
+        target.classList.contains('terminal-prompt') ||
+        target.classList.contains('clickable')) {
+      // Just stop propagation to prevent body click handling
+      e.stopPropagation();
+      return;
+    }
+    
+    // For other elements in terminal, prevent default and focus input
     e.stopPropagation();
     e.preventDefault();
     
     // Only focus if we're not already focused on an input field
-    // This prevents losing selection when user is selecting text
     if (inputRef.current && document.activeElement !== inputRef.current) {
       inputRef.current.focus();
     }
@@ -633,24 +639,44 @@ Type 'help <command>' for more information on a specific command`;
       }, 100);
     }
   }, [isMinimized]);
-    // Additional focus handler to ensure terminal input stays focused
+  // Additional focus handler to ensure terminal input stays focused
   useEffect(() => {
-    const refocusInput = () => {
-      if (inputRef.current && document.activeElement !== inputRef.current && !isMinimized) {
+    const refocusInput = (e?: Event) => {
+      // Only focus if we're inside the terminal container
+      // and don't refocus when clicking on buttons or other interactive elements
+      if (e) {
+        const target = e.target as HTMLElement;
+        if (target.tagName === 'BUTTON' || 
+            target.closest('button') || 
+            target.hasAttribute('role') || 
+            target.classList.contains('terminal-prompt')) {
+          return; // Don't auto-focus on interactive elements
+        }
+      }
+      
+      if (inputRef.current && 
+          document.activeElement !== inputRef.current && 
+          !isMinimized && 
+          document.activeElement?.tagName !== 'BUTTON') {
         inputRef.current.focus();
       }
     };
     
-    // Refocus after any user interaction with the terminal
+    // Refocus after user interaction with the terminal, but only when clicking on non-interactive elements
     const terminalElement = terminalRef.current;
     if (terminalElement) {
-      terminalElement.addEventListener('click', refocusInput);
-      terminalElement.addEventListener('touchend', refocusInput);
+      // Use mousedown instead of click to prevent focus issues
+      terminalElement.addEventListener('mousedown', refocusInput);
       
-      // Check for focus loss and recover it
-      const handleFocusOut = () => {
-        // Use setTimeout to ensure this happens after other focus events
-        setTimeout(refocusInput, 10);
+      // Check for focus loss and recover it, but only when not clicking on a button
+      const handleFocusOut = (e: FocusEvent) => {
+        const relatedTarget = e.relatedTarget as HTMLElement;
+        if (!relatedTarget || 
+            (relatedTarget.tagName !== 'BUTTON' && 
+             !relatedTarget.closest('button'))) {
+          // Use a short timeout to ensure this happens after other focus events
+          setTimeout(() => refocusInput(), 10);
+        }
       };
       
       const inputElement = inputRef.current;
@@ -658,20 +684,14 @@ Type 'help <command>' for more information on a specific command`;
         inputElement.addEventListener('blur', handleFocusOut);
       }
       
-      // Periodically check if focus needs to be restored (as a fallback)
-      const focusInterval = setInterval(refocusInput, 500);
-      
       return () => {
         if (terminalElement) {
-          terminalElement.removeEventListener('click', refocusInput);
-          terminalElement.removeEventListener('touchend', refocusInput);
+          terminalElement.removeEventListener('mousedown', refocusInput);
         }
         
         if (inputElement) {
           inputElement.removeEventListener('blur', handleFocusOut);
         }
-        
-        clearInterval(focusInterval);
       };
     }
   }, [isMinimized]);
@@ -731,12 +751,23 @@ Type 'help <command>' for more information on a specific command`;
                   <FaTimes className="h-3 w-3" />
                 </Button>
               </div>
-            </div>
-            <div className="terminal-body">              <div 
+            </div>            <div className="terminal-body">              <div 
                 ref={terminalRef} 
                 className="terminal-content" 
-                onClick={handleTerminalClick}
-                onMouseDown={(e) => e.stopPropagation()}
+                onClick={(e) => {
+                  // Only handle click if it's directly on the terminal content, not on a button or input
+                  const target = e.target as HTMLElement;
+                  if (target === terminalRef.current || target.classList.contains('terminal-content')) {
+                    handleTerminalClick(e);
+                  }
+                }}
+                onMouseDown={(e) => {
+                  // Don't stop propagation for buttons or interactive elements
+                  const target = e.target as HTMLElement;
+                  if (target.tagName !== 'BUTTON' && !target.closest('button') && !target.classList.contains('clickable')) {
+                    e.stopPropagation();
+                  }
+                }}
                 onWheel={(e) => e.stopPropagation()}
               >
                 {history.map((item: CommandHistory, idx: number) => (
@@ -768,18 +799,27 @@ Type 'help <command>' for more information on a specific command`;
                     value={input}
                     onChange={(e) => {
                       setInput(e.target.value);
-                      // Ensure input stays focused
-                      e.currentTarget.focus();
                     }}
                     onKeyDown={(e) => {
+                      // Stop propagation for key events to prevent global handlers from activating
+                      e.stopPropagation();
                       handleKeyDown(e);
-                      // Ensure we maintain focus after key events
-                      setTimeout(() => inputRef.current?.focus(), 0);
+                    }}
+                    onClick={(e) => {
+                      // Prevent clicks from bubbling up
+                      e.stopPropagation();
                     }}
                     onBlur={(e) => {
-                      // Recover focus if it's within the terminal container
-                      if (terminalRef.current?.contains(e.relatedTarget as Node)) {
-                        setTimeout(() => inputRef.current?.focus(), 0);
+                      // Only recover focus if we're still within the terminal 
+                      // and not clicking on a button or other interactive element
+                      const relatedTarget = e.relatedTarget as HTMLElement;
+                      if (relatedTarget && 
+                          terminalRef.current?.contains(relatedTarget) && 
+                          relatedTarget.tagName !== 'BUTTON' && 
+                          !relatedTarget.closest('button') &&
+                          !relatedTarget.classList.contains('clickable')) {
+                        // Very short delay to not interfere with legitimate clicks
+                        setTimeout(() => inputRef.current?.focus(), 10);
                       }
                     }}
                     className="bg-transparent border-none outline-none flex-1 text-white caret-green-500"

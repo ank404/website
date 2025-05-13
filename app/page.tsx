@@ -44,19 +44,52 @@ export default function Home() {
     return () => {
       window.removeEventListener("pointermove", updateAuraPosition);
     };
-  }, []);
-  // Add smooth scrolling to anchor links
+  }, []);  // Add smooth scrolling to anchor links - but only for actual navigation links!
   useEffect(() => {
     if (!lenis) return;
     
     const handleAnchorClick = (e: MouseEvent) => {
+      // Emergency check - if this is not a left click, don't handle it
+      if (e.button !== 0) return;
+      // Check if this is a click within the terminal component
+      // If so, don't handle navigation unless explicitly clicking on a navigation link
       const target = e.target as HTMLElement;
-      const anchor = target.closest('a[href^="#"]');
+      const terminalContent = document.querySelector('.terminal-content');
+      if (terminalContent && terminalContent.contains(target)) {
+        const isNavigationLink = target.tagName === 'A' || 
+                              target.closest('a[href^="#"]');
+        if (!isNavigationLink) {
+          return; // Don't handle clicks inside terminal unless they're explicit navigation links
+        }
+      }
       
-      if (!anchor) return;
+      // For other clicks, only process navigation links
+      const isDirectClickOnAnchor = target.tagName === 'A' &&
+                                 target.hasAttribute('href') && 
+                                 target.getAttribute('href')?.startsWith('#');
+      
+      const isClickOnAnchorChild = target.parentElement?.tagName === 'A' && 
+                                target.parentElement.hasAttribute('href') && 
+                                target.parentElement.getAttribute('href')?.startsWith('#');
+                                
+      if (!isDirectClickOnAnchor && !isClickOnAnchorChild) {
+        return; // Not clicking on a navigation element
+      }
+      
+      // Get the anchor element
+      const anchor = isDirectClickOnAnchor ? 
+                   target : 
+                   (isClickOnAnchorChild ? target.parentElement : null);
+      
+      if (!anchor || !(anchor instanceof HTMLAnchorElement)) return;
+      
+      const href = anchor.getAttribute('href');
+      if (!href || !href.startsWith('#')) return;
       
       e.preventDefault();
-      const id = anchor.getAttribute('href');
+      e.stopPropagation(); // Stop event from bubbling up
+      
+      const id = href;
       if (id && id !== '#') {
         const element = document.querySelector(id) as HTMLElement;
         if (element) {
@@ -71,7 +104,7 @@ export default function Home() {
 
     document.addEventListener('click', handleAnchorClick);
     return () => document.removeEventListener('click', handleAnchorClick);
-  }, [lenis]);  return (
+  }, [lenis]);return (
     <>
       <Head>
         <style jsx global>{`

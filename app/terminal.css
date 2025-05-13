@@ -9,6 +9,13 @@
   line-height: 1.4;
   color: rgb(236, 240, 241);
   overscroll-behavior: contain; /* Prevent scroll propagation */
+  isolation: isolate; /* Create a new stacking context */
+  position: relative; /* For proper isolation */
+  z-index: 1; /* Create proper stacking context */
+  
+  /* Prevent accidental scrolling on the page when interacting with the terminal */
+  touch-action: pan-y; 
+  -ms-touch-action: pan-y;
 }
 
 .terminal-content::-webkit-scrollbar {
@@ -113,4 +120,17 @@
 
 .terminal-success {
   color: rgba(236, 240, 241, 0.9);
+}
+
+/* Prevent the terminal section from capturing global events */
+#terminal-demo {
+  position: relative;
+  z-index: 1;
+  isolation: isolate;
+}
+
+/* Make sure button clicks don't cause unwanted behavior */
+#terminal-demo button {
+  position: relative;
+  z-index: 2;
 }
