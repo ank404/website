@@ -19,17 +19,36 @@ const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   const auraRef = useRef<HTMLDivElement>(null);
-  const { lenis } = useLenis();
-
-  // Scroll to top on page load/refresh
+  const { lenis } = useLenis();  // Scroll to top on page load/refresh with multiple attempts
   useEffect(() => {
-    if (lenis) {
-      // Use setTimeout to ensure this happens after the page is fully loaded
+    if (!lenis) return;
+
+    // Immediate attempt
+    window.scrollTo(0, 0);
+    lenis.scrollTo(0, { immediate: true, force: true });
+    
+    // Multiple timed attempts to ensure it works
+    const scrollAttempts = [50, 100, 500];
+    
+    scrollAttempts.forEach(delay => {
       setTimeout(() => {
-        lenis.scrollTo(0, { immediate: true });
-        console.log('Scrolled to top on page load');
-      }, 0);
-    }
+        window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+        lenis.scrollTo(0, { immediate: true, force: true });
+        console.log(`Scrolled to top attempt after ${delay}ms`);
+      }, delay);
+    });
+    
+    // Final attempt after all content is surely loaded
+    setTimeout(() => {
+      window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+      lenis.scrollTo(0, { immediate: true, force: true });
+      
+      // Also clear any hash from the URL that might be causing scroll issues
+      if (window.location.hash) {
+        history.replaceState(null, '', window.location.pathname + window.location.search);
+      }
+      console.log('Final scroll to top attempt');
+    }, 1000);
   }, [lenis]);
 
   useEffect(() => {

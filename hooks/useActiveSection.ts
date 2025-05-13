@@ -55,10 +55,30 @@ const useActiveSection = (sectionIds: string[]): string => {
     // Add event listener for scrolling
     window.addEventListener('scroll', handleScroll);
     
-    // Call once on mount to set initial section
-    handleScroll();
+    // Call after a delay to allow page to settle into its initial scroll position
+    // This prevents the hook from affecting initial scroll behavior
+    let initialSectionSet = false;
     
-    // Clean up event listener on unmount
+    const initialScrollTimer = setTimeout(() => {
+      if (window.scrollY < 100) {
+        // If near the top of the page, set the first section as active without running full detection
+        const firstSection = sectionIds[0];
+        if (firstSection) {
+          setActiveSection(firstSection);
+          console.log(`Initial active section set to: ${firstSection} (page top)`);
+        }
+      } else {
+        // Otherwise run the normal detection
+        handleScroll();
+      }
+      initialSectionSet = true;
+    }, 500);
+    
+    // Clean up event listener and timer on unmount
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      clearTimeout(initialScrollTimer);
+    };
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };

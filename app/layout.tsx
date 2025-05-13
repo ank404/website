@@ -57,12 +57,47 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {  return (
     <html lang="en" className={`scroll-smooth ${inter.variable} ${poppins.variable} ${spaceGrotesk.variable}`}>
-      <head>
-        <script
+      <head>        <script
           dangerouslySetInnerHTML={{
             __html: `
+              // Force manual scroll restoration
               history.scrollRestoration = 'manual';
-              window.onbeforeunload = function () {
+              
+              // Clear hash on page load to prevent automatic anchor scrolling
+              if (window.location.hash) {
+                history.replaceState(null, '', window.location.pathname + window.location.search);
+              }
+              
+              // Aggressively ensure page starts at top with multiple attempts
+              document.addEventListener('DOMContentLoaded', function() {
+                // First attempt
+                window.scrollTo(0, 0);
+                
+                // Multiple attempts with increasing delays
+                [0, 50, 100, 300, 600, 1000].forEach(function(delay) {
+                  setTimeout(function() {
+                    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+                  }, delay);
+                });
+              });
+              
+              // Also handle on full load
+              window.onload = function() {
+                window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+                
+                // Clear any hash again
+                if (window.location.hash) {
+                  history.replaceState(null, '', window.location.pathname + window.location.search);
+                }
+                
+                // Final attempt after everything else
+                setTimeout(function() {
+                  window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+                }, 200);
+              };
+              
+              // Reset before unloading
+              window.onbeforeunload = function() {
                 window.scrollTo(0, 0);
               };
             `,

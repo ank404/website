@@ -27,7 +27,8 @@ const Terminal = (): React.ReactNode => {
       command: "",
       output: "Welcome to Anup's Terminal! Type 'help' to see available commands.",
     },
-  ]);  const [position, setPosition] = useState<number>(history.length);
+  ]);
+  const [position, setPosition] = useState<number>(history.length);
   const [isMinimized, setIsMinimized] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [commandHistory, setCommandHistory] = useState<string[]>([]);
@@ -70,6 +71,26 @@ const Terminal = (): React.ReactNode => {
       { name: "cache-01", status: "running", os: "Alpine Linux", vcpus: 2, ram: "4GB" },
     ],
   };
+  // Ensure terminal doesn't affect page scroll on load
+  useEffect(() => {
+    // Prevent the terminal from causing unintended scrolling when the page loads
+    const preventTerminalScroll = () => {
+      // Check if a hash in the URL targets the terminal
+      if (window.location.hash && window.location.hash.includes('terminal')) {
+        // Clear the hash to prevent auto-scrolling to terminal
+        window.history.replaceState(null, '', window.location.pathname + window.location.search);
+        
+        // Force scroll to top
+        window.scrollTo(0, 0);
+      }
+    };
+    
+    // Run immediately
+    preventTerminalScroll();
+    
+    // Also run after a short delay to handle any race conditions
+    setTimeout(preventTerminalScroll, 100);
+  }, []);
 
   // Define available commands
   const commands: Record<string, CommandInfo> = {
