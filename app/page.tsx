@@ -6,9 +6,7 @@ import Projects from "@/components/Projects";
 import About from "@/components/About";
 import Skills from "@/components/Skills";
 import Certifications from "@/components/Certifications";
-import Contact from "@/components/Contact";
 import ResumeDownload from "@/components/ResumeDownload";
-import Testimonials from "@/components/Testimonials";
 import Terminal from "@/components/Terminal";
 import LiveDashboard from "@/components/LiveDashboard";
 import CloudArchitecture from "@/components/CloudArchitecture";
@@ -102,13 +100,10 @@ export default function Home() {
             <ExpCard />
             <Projects />            <Skills />            <div className="flex flex-col gap-20">
               <Terminal />
-              <LiveDashboard />
-            </div>
+              <LiveDashboard />            </div>
             <CloudArchitecture />
             <Certifications />
-            <Testimonials />
             <ResumeDownload />
-            <Contact />
             
             <footer className="mt-24 text-sm text-muted-foreground">
               <div className="border-t border-border pt-6">
