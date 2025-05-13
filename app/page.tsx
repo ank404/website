@@ -67,22 +67,51 @@ export default function Home() {
   useEffect(() => {
     if (!lenis) return;
     
+    // Global "last click location" tracking to prevent terminal focus issue
+    let lastClickTarget: HTMLElement | null = null;
+    let lastClickTime = 0;
+    
     const handleAnchorClick = (e: MouseEvent) => {
       // Emergency check - if this is not a left click, don't handle it
       if (e.button !== 0) return;
-      // Check if this is a click within the terminal component
-      // If so, don't handle navigation unless explicitly clicking on a navigation link
+      
       const target = e.target as HTMLElement;
+      const currentTime = Date.now();
+      
+      // Detect double clicks or rapid clicks in the same area
+      // This helps prevent the terminal focus issue on second click
+      if (lastClickTarget && currentTime - lastClickTime < 500 && 
+          (target === lastClickTarget || target.contains(lastClickTarget) || lastClickTarget.contains(target))) {
+        // This is likely a double-click or rapid click in the same area
+        // Clear the last click info to prevent continuous blocking
+        lastClickTarget = null;
+        lastClickTime = 0;
+        
+        // Don't do any special handling for this click
+        return;
+      }
+      
+      // Check if this is a click within the terminal component
       const terminalContent = document.querySelector('.terminal-content');
-      if (terminalContent && terminalContent.contains(target)) {
+      const terminalContainer = document.querySelector('.terminal-container');
+      const isTerminalClick = (terminalContent && terminalContent.contains(target)) || 
+                            (terminalContainer && terminalContainer.contains(target));
+      
+      // Store this click info for the next click
+      lastClickTarget = target;
+      lastClickTime = currentTime;
+      
+      // Special terminal handling
+      if (isTerminalClick) {
+        // For terminal clicks, only handle explicit navigation links
         const isNavigationLink = target.tagName === 'A' || 
-                              target.closest('a[href^="#"]');
+                              !!target.closest('a[href^="#"]');
         if (!isNavigationLink) {
-          return; // Don't handle clicks inside terminal unless they're explicit navigation links
+          return; // Don't process regular terminal clicks
         }
       }
       
-      // For other clicks, only process navigation links
+      // For all clicks, only process navigation links
       const isDirectClickOnAnchor = target.tagName === 'A' &&
                                  target.hasAttribute('href') && 
                                  target.getAttribute('href')?.startsWith('#');

@@ -70,8 +70,7 @@ const Terminal = (): React.ReactNode => {
       { name: "db-01", status: "running", os: "Ubuntu 22.04", vcpus: 8, ram: "16GB" },
       { name: "cache-01", status: "running", os: "Alpine Linux", vcpus: 2, ram: "4GB" },
     ],
-  };
-  // Ensure terminal doesn't affect page scroll on load
+  };  // Ensure terminal doesn't affect page scroll on load and handle click behavior
   useEffect(() => {
     // Prevent the terminal from causing unintended scrolling when the page loads
     const preventTerminalScroll = () => {
@@ -90,6 +89,26 @@ const Terminal = (): React.ReactNode => {
     
     // Also run after a short delay to handle any race conditions
     setTimeout(preventTerminalScroll, 100);
+    
+    // Add a global click handler to prevent terminal from capturing all clicks
+    const handleDocumentClick = (e: MouseEvent) => {
+      const terminalElem = terminalRef.current;
+      if (!terminalElem) return;
+      
+      // If we're clicking outside the terminal, clear any terminal focus
+      // This helps prevent the terminal from capturing subsequent clicks
+      if (!terminalElem.contains(e.target as Node)) {
+        if (document.activeElement && terminalElem.contains(document.activeElement)) {
+          (document.activeElement as HTMLElement).blur();
+        }
+      }
+    };
+    
+    document.addEventListener('click', handleDocumentClick);
+    
+    return () => {
+      document.removeEventListener('click', handleDocumentClick);
+    };
   }, []);
 
   // Define available commands
@@ -593,6 +612,13 @@ Type 'help <command>' for more information on a specific command`;
   const handleTerminalClick = (e: React.MouseEvent) => {
     const target = e.target as HTMLElement;
     
+    // Check if this is a navigation link click - let those pass through to the navigation handler
+    const isNavigationLink = target.tagName === 'A' || target.closest('a[href^="#"]');
+    if (isNavigationLink) {
+      // For navigation links, don't interfere with normal link behavior
+      return;
+    }
+    
     // If clicking on a button, input, or interactive element, let it handle its own click
     if (target.tagName === 'BUTTON' || 
         target.closest('button') || 
@@ -600,7 +626,7 @@ Type 'help <command>' for more information on a specific command`;
         target.hasAttribute('role') ||
         target.classList.contains('terminal-prompt') ||
         target.classList.contains('clickable')) {
-      // Just stop propagation to prevent body click handling
+      // Only stop propagation but allow the event to continue
       e.stopPropagation();
       return;
     }

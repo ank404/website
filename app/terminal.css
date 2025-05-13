@@ -16,6 +16,17 @@
   /* Prevent accidental scrolling on the page when interacting with the terminal */
   touch-action: pan-y; 
   -ms-touch-action: pan-y;
+  
+  /* Additional event isolation */
+  pointer-events: auto;
+}
+
+/* Terminal container to further isolate event handling */
+.terminal-container {
+  isolation: isolate;
+  position: relative;
+  z-index: 1;
+  contain: layout style;  /* CSS containment for better performance and isolation */
 }
 
 .terminal-content::-webkit-scrollbar {
